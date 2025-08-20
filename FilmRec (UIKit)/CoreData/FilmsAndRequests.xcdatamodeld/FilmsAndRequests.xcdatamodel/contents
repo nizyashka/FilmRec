@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="FilmCoreData" representedClassName="FilmCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="String"/>
+        <relationship name="requests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RequestCoreData" inverseName="films" inverseEntity="RequestCoreData"/>
+    </entity>
+    <entity name="RequestCoreData" representedClassName="RequestCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="country" attributeType="String"/>
+        <attribute name="decade" attributeType="String"/>
+        <attribute name="director" attributeType="String"/>
+        <attribute name="genre" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="films" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilmCoreData" inverseName="requests" inverseEntity="FilmCoreData"/>
+    </entity>
+</model>
