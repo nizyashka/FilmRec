@@ -6,14 +6,22 @@
 //
 
 final class MyRequestsViewModel {
-    private let myRequestsModel = MyRequestsModel()
+    let requestsStore = RequestsStore.shared
     
     var requests: [Request] {
-        let requestsCoreData = self.myRequestsModel.fetchRequestsFromCoreData()
-        
+        let requestsCoreData = fetchRequestsFromCoreData()
         let requests = toRequest(from: requestsCoreData)
         
         return requests
+    }
+    
+    private func fetchRequestsFromCoreData() -> [RequestCoreData] {
+        guard let requestsCoreData = requestsStore.fetchedRequestsResultController.fetchedObjects else {
+            assertionFailure("[RequestsModel] - fetchRequestsFromCoreData: Error getting fetched objects from Requests Store.")
+            return []
+        }
+        
+        return requestsCoreData
     }
     
     private func toRequest(from requestsCoreData: [RequestCoreData]) -> [Request] {

@@ -8,6 +8,8 @@
 import Foundation
 
 final class RequestCreationViewModel {
+    var updatePickedOptionLabel: (IndexPath, String) -> Void = { _, _ in }
+    
     let optionsTabs = ["Genre", "Country", "Director", "Decade"]
     
     var pickedGenre = "Any"
@@ -28,7 +30,7 @@ final class RequestCreationViewModel {
         print(requestName, pickedGenre, pickedCountry, pickedDirector, pickedDecade) // Создать объект Request
     }
     
-    func getTabNameAndPickedOption(index: Int) -> (String, String) {
+    func getTabNameAndPickedOption(at index: Int) -> (String, String) {
         let optionsTabName = optionsTabs[index]
         var pickedOption = "Any"
         
@@ -54,12 +56,16 @@ extension RequestCreationViewModel: OptionsViewModelDelegate {
         switch optionsTabName {
         case "Genre":
             pickedGenre = selectedOption
+            updatePickedOptionLabel(IndexPath(row: 0, section: 0), selectedOption)
         case "Country":
             pickedCountry = selectedOption
+            updatePickedOptionLabel(IndexPath(row: 1, section: 0), selectedOption)
         case "Director":
             pickedDirector = selectedOption
+            updatePickedOptionLabel(IndexPath(row: 2, section: 0), selectedOption)
         case "Decade":
             pickedDecade = selectedOption
+            updatePickedOptionLabel(IndexPath(row: 3, section: 0), selectedOption)
         default:
             assertionFailure("[RequestCreationViewModel] - setPickedOption: No such optionsTabName exists.")
         }

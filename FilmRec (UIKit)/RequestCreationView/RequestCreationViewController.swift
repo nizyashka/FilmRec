@@ -8,6 +8,13 @@
 import UIKit
 
 final class RequestCreationViewController: UIViewController {
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return scrollView
+    }()
+    
     private lazy var requestNameLabel: UILabel = {
         let label = UILabel()
         label.text = "REQUEST NAME"
@@ -36,7 +43,6 @@ final class RequestCreationViewController: UIViewController {
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.masksToBounds = true
-//        textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -69,10 +75,6 @@ final class RequestCreationViewController: UIViewController {
         return button
     }()
     
-//    private let requestsStore = RequestsStore.shared
-    
-//    private let optionsTabs = ["Genre", "Country", "Director", "Decade"]
-    
     private let viewModel: RequestCreationViewModel
     
     init(viewModel: RequestCreationViewModel) {
@@ -90,6 +92,7 @@ final class RequestCreationViewController: UIViewController {
         
         setupUI()
         setupConstraints()
+        setBinding()
     }
     
     private func setupUI() {
@@ -107,38 +110,37 @@ final class RequestCreationViewController: UIViewController {
         
         navigationItem.leftBarButtonItem = leftBarButton
         
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .lightGray
-        
-//        navigationController?.navigationBar.standardAppearance = appearance
-//        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-//        navigationController?.navigationBar.compactAppearance = appearance
-        
-        view.addSubview(requestNameLabel)
-        view.addSubview(requestNameTextField)
-        view.addSubview(optionsTabsLabel)
-        view.addSubview(optionsTabsTableView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(requestNameLabel)
+        scrollView.addSubview(requestNameTextField)
+        scrollView.addSubview(optionsTabsLabel)
+        scrollView.addSubview(optionsTabsTableView)
         view.addSubview(saveWithoutExecutionButton)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            requestNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            requestNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            requestNameLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 16),
+            requestNameLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             
             requestNameTextField.heightAnchor.constraint(equalToConstant: 45),
             requestNameTextField.topAnchor.constraint(equalTo: requestNameLabel.bottomAnchor, constant: 6),
-            requestNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            requestNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            requestNameTextField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            requestNameTextField.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
             
             optionsTabsLabel.topAnchor.constraint(equalTo: requestNameTextField.bottomAnchor, constant: 32),
-            optionsTabsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            optionsTabsLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             
+            optionsTabsTableView.heightAnchor.constraint(equalToConstant: CGFloat(viewModel.optionsTabs.count * 45 - 1)),
             optionsTabsTableView.topAnchor.constraint(equalTo: optionsTabsLabel.bottomAnchor, constant: 6),
-            optionsTabsTableView.bottomAnchor.constraint(equalTo: optionsTabsTableView.topAnchor, constant: CGFloat(viewModel.optionsTabs.count * 45 - 1)),
-            optionsTabsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            optionsTabsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            optionsTabsTableView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            optionsTabsTableView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            optionsTabsTableView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
             
             saveWithoutExecutionButton.heightAnchor.constraint(equalToConstant: 95),
             saveWithoutExecutionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
@@ -151,13 +153,26 @@ final class RequestCreationViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func saveWithoutExecutionButtonTapped() { //Вынести во ViewModel и Model
+    @objc private func saveWithoutExecutionButtonTapped() {
         if let requestName = requestNameTextField.text, !requestName.isEmpty {
             viewModel.saveWithoutExecution(requestName: requestName)
             dismiss(animated: true)
         } else {
             // Показать алерт
         }
+    }
+    
+    private func setBinding() {
+        viewModel.updatePickedOptionLabel = updatePickedOptionLabel
+    }
+    
+    private func updatePickedOptionLabel(at indexPath: IndexPath, to pickedOption: String) {
+        guard let optionsTabCell = optionsTabsTableView.cellForRow(at: indexPath) as? OptionsTabCell else {
+            assertionFailure("[RequestCreationViewController] - updatePickedOptionLabel: Error getting a cell by IndexPath.")
+            return
+        }
+        
+        optionsTabCell.pickedOptionLabel.text = pickedOption
     }
 }
 
@@ -172,10 +187,7 @@ extension RequestCreationViewController: UITableViewDelegate, UITableViewDataSou
             return UITableViewCell()
         }
         
-//        cell.optionsTabNameLabel.text = viewModel.optionsTabs[indexPath.row]
-//        cell.pickedOptionLabel.text = "Any"
-        
-        (cell.optionsTabNameLabel.text, cell.pickedOptionLabel.text) = viewModel.getTabNameAndPickedOption(index: indexPath.row)
+        (cell.optionsTabNameLabel.text, cell.pickedOptionLabel.text) = viewModel.getTabNameAndPickedOption(at: indexPath.row)
         
         return cell
     }
@@ -185,7 +197,9 @@ extension RequestCreationViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let optionsViewModel = OptionsViewModel(delegate: viewModel, optionsTabName: viewModel.optionsTabs[indexPath.row])
+        let (optionsTabName, selectedOption) = viewModel.getTabNameAndPickedOption(at: indexPath.row)
+        
+        let optionsViewModel = OptionsViewModel(delegate: viewModel, optionsTabName: optionsTabName, selectedOption: selectedOption)
         let optionsTabViewController = OptionsViewController(viewModel: optionsViewModel)
         navigationController?.pushViewController(optionsTabViewController, animated: true)
         

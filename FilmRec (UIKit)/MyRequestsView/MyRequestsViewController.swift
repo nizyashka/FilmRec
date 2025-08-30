@@ -15,6 +15,7 @@ class MyRequestsViewController: UIViewController {
         
         tableView.register(RequestCell.self, forCellReuseIdentifier: RequestCell.reuseIdentifier)
         
+        tableView.backgroundColor = .backgroundWhite
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -89,6 +90,7 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         requestCell.nameLabel.text = viewModel?.requests[indexPath.row].name
+        requestCell.backgroundColor = .backgroundWhite
         
         return requestCell
     }
@@ -98,14 +100,18 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
             assertionFailure("[MyRequestsViewController] - tableView: No request with such indexPath found.")
             return
         }
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let requestViewController = RequestViewController(
-            name: request.name,
-            genre: request.genre,
-            country: request.country,
-            director: request.director,
-            decade: request.decade)
+        let requestObject = Request(name: request.name,
+                              genre: request.genre,
+                              country: request.country,
+                              director: request.director,
+                              decade: request.decade)
+        
+        let requestViewModel = RequestViewModel(request: requestObject)
+        
+        let requestViewController = RequestViewController(viewModel: requestViewModel)
         
         navigationController?.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(requestViewController, animated: true)

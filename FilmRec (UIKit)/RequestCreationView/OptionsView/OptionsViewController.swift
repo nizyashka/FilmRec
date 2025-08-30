@@ -8,6 +8,13 @@
 import UIKit
 
 final class OptionsViewController: UIViewController {
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return scrollView
+    }()
+    
     private lazy var optionsTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
@@ -16,6 +23,8 @@ final class OptionsViewController: UIViewController {
         tableView.layer.cornerRadius = 8
         tableView.layer.masksToBounds = true
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.isScrollEnabled = false
+        tableView.tableHeaderView = UIView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
@@ -46,15 +55,22 @@ final class OptionsViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         title = viewModel.optionsTabName
         
-        view.addSubview(optionsTableView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(optionsTableView)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            optionsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            optionsTableView.bottomAnchor.constraint(equalTo: optionsTableView.topAnchor, constant: CGFloat(viewModel.options.count * 45 - 1)),
-            optionsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            optionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            optionsTableView.heightAnchor.constraint(equalToConstant: CGFloat(viewModel.options.count * 45 - 1)),
+            optionsTableView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 32),
+            optionsTableView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            optionsTableView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            optionsTableView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
 }
@@ -72,7 +88,7 @@ extension OptionsViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.optionNameLabel.text = viewModel.options[indexPath.row]
         
-        cell.checkmarkImageView.isHidden = (viewModel.selectedOption == "Any" && indexPath.row == 0) ? false : true
+        cell.checkmarkImageView.isHidden = viewModel.selectedOption == cell.optionNameLabel.text ? false : true
         
         return cell
     }
@@ -107,5 +123,6 @@ extension OptionsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

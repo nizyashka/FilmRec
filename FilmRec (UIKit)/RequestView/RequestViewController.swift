@@ -8,30 +8,56 @@
 import UIKit
 
 final class RequestViewController: UIViewController {
-    private lazy var requestNameLabel: UILabel = {
-        let requestNameLabel = UILabel()
-        requestNameLabel.text = self.name
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        return requestNameLabel
+        return scrollView
     }()
     
-    private let name: String
-    private let genre: String
-    private let country: String
-    private let director: String
-    private let decade: String
-    
-    init(name: String,
-         genre: String,
-         country: String,
-         director: String,
-         decade: String) {
+    private lazy var optionsTabsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "REQUEST OPTIONS"
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
         
-        self.name = name
-        self.genre = genre
-        self.country = country
-        self.director = director
-        self.decade = decade
+        return label
+    }()
+    
+    private lazy var optionsTabsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(LockedOptionsTabCell.self, forCellReuseIdentifier: LockedOptionsTabCell.reuseIdentifier)
+        tableView.layer.cornerRadius = 8
+        tableView.layer.masksToBounds = true
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.isScrollEnabled = false
+        tableView.allowsSelection = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
+    
+    private lazy var executeRequestButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Execute", for: .normal)
+        button.backgroundColor = .lightGray
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.addTarget(self, action: #selector(executeRequestButtonTapped), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    private let viewModel: RequestViewModel
+    
+    init(viewModel: RequestViewModel) {
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,16 +70,76 @@ final class RequestViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        setupConstraints()
     }
     
     private func setupUI() {
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .backgroundWhite
+        navigationItem.largeTitleDisplayMode = .never
+        title = viewModel.request.name
         
-        configureNavigationTitle()
+        view.addSubview(scrollView)
+        scrollView.addSubview(optionsTabsLabel)
+        scrollView.addSubview(optionsTabsTableView)
+        view.addSubview(executeRequestButton)
     }
     
-    private func configureNavigationTitle() {
-        navigationItem.largeTitleDisplayMode = .never
-        title = name
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            optionsTabsLabel.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 32),
+            optionsTabsLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
+            
+            optionsTabsTableView.heightAnchor.constraint(equalToConstant: CGFloat(viewModel.optionsTabs.count * 45 - 1)),
+            optionsTabsTableView.topAnchor.constraint(equalTo: optionsTabsLabel.bottomAnchor, constant: 6),
+            optionsTabsTableView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            optionsTabsTableView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            optionsTabsTableView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
+            
+            executeRequestButton.heightAnchor.constraint(equalToConstant: 95),
+            executeRequestButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            executeRequestButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            executeRequestButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        ])
+    }
+    
+    @objc private func executeRequestButtonTapped() {
+        viewModel.executeRequest { result in
+            switch result {
+            case .success(let film):
+                DispatchQueue.main.async {
+                    let recommendedFilmView = RecommendedFilmView()
+                    recommendedFilmView.modalPresentationStyle = .pageSheet
+                    self.present(recommendedFilmView, animated: true)
+                }
+            case .failure(let error):
+                assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
+            }
+        }
+    }
+}
+
+extension RequestViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.optionsTabs.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LockedOptionsTabCell.reuseIdentifier, for: indexPath) as? LockedOptionsTabCell else {
+            assertionFailure("[RequestCreationViewController] - tableView: Error dequeueing a cell.")
+            return UITableViewCell()
+        }
+        
+        (cell.optionsTabNameLabel.text, cell.pickedOptionLabel.text) = viewModel.getTabNameAndPickedOption(at: indexPath.row)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 45
     }
 }
