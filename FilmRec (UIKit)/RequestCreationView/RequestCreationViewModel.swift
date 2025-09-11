@@ -20,14 +20,14 @@ final class RequestCreationViewModel {
     private let requestsStore = RequestsStore.shared
     
     func saveWithoutExecution(requestName: String) {
-//        requestsStore.addRequestToCoreData(
-//            name: requestName,
-//            genre: pickedGenre,
-//            country: pickedCountry,
-//            director: pickedDirector,
-//            decade: pickedDecade)
+        requestsStore.addRequestToCoreData(
+            name: requestName,
+            genre: pickedGenre,
+            country: pickedCountry,
+            director: pickedDirector,
+            decade: pickedDecade)
         
-        print(requestName, pickedGenre, pickedCountry, pickedDirector, pickedDecade) // Создать объект Request
+//        print(requestName, pickedGenre, pickedCountry, pickedDirector, pickedDecade) // Создать объект Request
     }
     
     func getTabNameAndPickedOption(at index: Int) -> (String, String) {

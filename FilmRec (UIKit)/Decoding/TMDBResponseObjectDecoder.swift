@@ -22,4 +22,15 @@ final class TMDBResponseObjectDecoder {
             return nil
         }
     }
+    
+    func decodeTMDBResponseForFilmByID(from data: Data) -> Film? {
+        do {
+            let decoder = JSONDecoder()
+            let decodedResponse = try decoder.decode(Film.self, from: data)
+            return decodedResponse
+        } catch {
+            print("[OpenAIResponseObjectDecoder] - decodeTMDBResponseForFilmByID: Error decoding a film from TMDB.")
+            return nil
+        }
+    }
 }

@@ -15,6 +15,10 @@ final class MyRequestsViewModel {
         return requests
     }
     
+    var requestsCoreData: [RequestCoreData] {
+        fetchRequestsFromCoreData()
+    }
+    
     private func fetchRequestsFromCoreData() -> [RequestCoreData] {
         guard let requestsCoreData = requestsStore.fetchedRequestsResultController.fetchedObjects else {
             assertionFailure("[RequestsModel] - fetchRequestsFromCoreData: Error getting fetched objects from Requests Store.")

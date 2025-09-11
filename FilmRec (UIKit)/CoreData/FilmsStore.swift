@@ -12,8 +12,9 @@ protocol FilmsStoreDelegate: AnyObject {
 }
 
 final class FilmsStore: NSObject {
-    var context = CoreDataStack.shared.viewContext
+    private var context = CoreDataStack.shared.viewContext
     
+    static let shared = FilmsStore()
     weak var filmsStoreDelegate: FilmsStoreDelegate?
     
     lazy var fetchedFilmsResultController: NSFetchedResultsController<FilmCoreData> = {
@@ -34,7 +35,9 @@ final class FilmsStore: NSObject {
         return fetchedFilmsResultController
     }()
     
-    func addFilmToCoreData(id: String, request: RequestCoreData) {
+    private override init() { }
+    
+    func addFilmToCoreData(id: Int32, request: RequestCoreData) {
         let film = FilmCoreData(context: context)
         
         film.id = id

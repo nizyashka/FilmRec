@@ -11,14 +11,16 @@ final class RequestViewModel {
     let optionsTabs = ["Genre", "Country", "Director", "Decade"]
     
     var request: Request
+    var requestCoreData: RequestCoreData
     
     let openAIService = OpenAIService.shared
     let tmdbService = TMDBService.shared
     let openAIResponseObjectDecoder = OpenAIResponseObjectDecoder.shared
     let tmdbResponseObjectDecoder = TMDBResponseObjectDecoder.shared
     
-    init(request: Request) {
+    init(request: Request, requestCoreData: RequestCoreData) {
         self.request = request
+        self.requestCoreData = requestCoreData
     }
     
     func getTabNameAndPickedOption(at index: Int) -> (String, String) {
@@ -101,6 +103,7 @@ final class RequestViewModel {
                             return
                         }
                         
+                        //TODO: Добавить если не пустой
                         completion(.success(films[0]))
                     case .failure(let error):
                         completion(.failure(error))

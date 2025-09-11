@@ -96,20 +96,21 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let request = viewModel?.requests[indexPath.row] else {
-            assertionFailure("[MyRequestsViewController] - tableView: No request with such indexPath found.")
+        guard let request = viewModel?.requests[indexPath.row],
+              let requestCoreData = viewModel?.requestsCoreData[indexPath.row] else {
+            assertionFailure("[MyRequestsViewController] - tableView: No request with such indexPath found or no viewModel.")
             return
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let requestObject = Request(name: request.name,
-                              genre: request.genre,
-                              country: request.country,
-                              director: request.director,
-                              decade: request.decade)
+//        let requestObject = Request(name: request.name,
+//                              genre: request.genre,
+//                              country: request.country,
+//                              director: request.director,
+//                              decade: request.decade)
         
-        let requestViewModel = RequestViewModel(request: requestObject)
+        let requestViewModel = RequestViewModel(request: request, requestCoreData: requestCoreData)
         
         let requestViewController = RequestViewController(viewModel: requestViewModel)
         

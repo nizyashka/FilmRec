@@ -74,4 +74,52 @@ final class TMDBService {
         
         task.resume()
     }
+    
+    func makeTMDBRequestForFilm(by id: Int32) -> URLRequest? {
+        guard let url = URL(string: "\(Constants.tmdbFilmIDURL)/\(id)") else {
+            print("[TMDBService] - makeTMDBRequestForFilm: Wrong URL.")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(Constants.tmdbAPIAccessToken)"
+        ]
+        
+        return request
+    }
+    
+    func fetchFilmByID(_ id: Int32, completion: @escaping (Result<Data, Error>) -> Void) {
+        guard let request = makeTMDBRequestForFilm(by: id) else {
+            print("[TMDBService] - fetchFilmByID: Was unable to get request.")
+            return
+        }
+        
+        let task = urlSession.dataTask(with: request) { data, response, error in
+            if let error {
+                print("[TMDBService] - fetchFilmByID: URLSession received an error: \(error)")
+                completion(.failure(error))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                print("[TMDBService] - fetchFilmByID: Received no response code")
+                completion(.failure(NetworkingErrors.noResponse))
+                return
+            }
+            print(response.statusCode)
+            
+            guard let data = data else {
+                print("[TMDBService] - fetchFilmByID: Received no data")
+                completion(.failure(NetworkingErrors.noData))
+                return
+            }
+            
+            completion(.success(data))
+        }
+        
+        task.resume()
+    }
 }

@@ -12,12 +12,14 @@ struct TMDBResponseObject: Codable {
 }
 
 struct Film: Codable {
+    var id: Int32
     var originalTitle: String
     var overview: String?
     var posterPath: String?
     var voteAverage: Double?
     
     enum CodingKeys: String, CodingKey {
+        case id = "id"
         case originalTitle = "original_title"
         case overview = "overview"
         case posterPath = "poster_path"
