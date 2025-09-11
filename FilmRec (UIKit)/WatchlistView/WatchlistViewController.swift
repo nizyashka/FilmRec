@@ -98,9 +98,8 @@ extension WatchlistViewController: UICollectionViewDelegateFlowLayout, UICollect
         
         let recommendedFilmViewModel = RecommendedFilmViewModel(film: film)
         let recommendedFilmViewController = RecommendedFilmViewController(viewModel: recommendedFilmViewModel)
-        let navigationController = UINavigationController(rootViewController: recommendedFilmViewController)
-        navigationController.modalPresentationStyle = .pageSheet
-        self.present(navigationController, animated: true)
+        recommendedFilmViewController.modalPresentationStyle = .pageSheet
+        present(recommendedFilmViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
