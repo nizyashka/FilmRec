@@ -93,8 +93,12 @@ final class RequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
-        setupConstraints()
+        viewModel.loadPreviouslyRecommendedFilms() {
+            self.setupUI()
+            self.setupConstraints()
+        }
+        
+        
     }
     
     private func setupUI() {
@@ -184,16 +188,38 @@ extension RequestViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension RequestViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        15
+        return viewModel.previouslyRecommendedFilms.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilmCardCell.reuseIdentifier, for: indexPath) as? FilmCardCell else {
-            assertionFailure("")
+            assertionFailure("[RequestViewController] - collectionView: unable to dequeue a cell.")
             return UICollectionViewCell()
         }
         
+        let film = viewModel.previouslyRecommendedFilms[indexPath.row]
+        
+        guard let posterURL = film.posterPath,
+              let imageURL = URL(string: "https://image.tmdb.org/t/p/original" + posterURL) else {
+            assertionFailure("[RecommendedFilmView] - filmPosterImageView: Error getting a URL of poster.")
+            cell.filmPosterImageView.isHidden = true
+            return cell
+        }
+        
+        cell.filmPosterImageView.kf.setImage(with: imageURL)
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        let film = viewModel.previouslyRecommendedFilms[indexPath.row]
+        
+        let recommendedFilmViewModel = RecommendedFilmViewModel(film: film)
+        let recommendedFilmViewController = RecommendedFilmViewController(viewModel: recommendedFilmViewModel)
+        recommendedFilmViewController.modalPresentationStyle = .pageSheet
+        present(recommendedFilmViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -9,6 +9,36 @@ import UIKit
 import Kingfisher
 
 final class RecommendedFilmViewController: UIViewController {
+    private lazy var leftBarButton: UIBarButtonItem = {
+        let leftBarButton = UIBarButtonItem(title: "Close",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(leftBarButtonTapped))
+        
+        leftBarButton.tintColor = .systemBlue
+        
+        return leftBarButton
+    }()
+    
+    private lazy var rightBarButton: UIBarButtonItem = {
+        let systemName = viewModel.isInWatchlist() ? "clock.badge.xmark" : "clock.badge.checkmark"
+        
+        let rightBarButton = UIBarButtonItem(image: UIImage(systemName: systemName)!,
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(rightBarButtonTapped))
+        
+        rightBarButton.tintColor = viewModel.isInWatchlist() ? .systemRed : .systemGreen
+        
+        return rightBarButton
+    }()
+    
+//    private lazy var rightBarButtonImage: UIImage = {
+//        let systemName = viewModel.isInWatchlist() ? "clock.badge.xmark" : "clock.badge.checkmark"
+//        
+//        return UIImage(systemName: systemName)!
+//    }()
+    
     private lazy var filmPosterImageView: UIImageView = {
         guard let posterURL = viewModel.film.posterPath,
               let imageURL = URL(string: "https://image.tmdb.org/t/p/original" + posterURL) else {
@@ -100,7 +130,8 @@ final class RecommendedFilmViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .backgroundWhite
         
-        configureNavBarItem()
+        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.rightBarButtonItem = rightBarButton
         
         view.addSubview(filmPosterImageView)
         view.addSubview(filmTitleLabel)
@@ -135,30 +166,22 @@ final class RecommendedFilmViewController: UIViewController {
         ])
     }
     
-    private func configureNavBarItem() {
-        let leftBarButton = UIBarButtonItem(title: "Close",
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(closeBarButtonTapped))
-        
-        leftBarButton.tintColor = .systemRed
-        
-        let rightBarButton = UIBarButtonItem(image: UIImage(systemName: "clock.badge.questionmark"),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(addToWatchlistBarButtonTapped))
-        
-        rightBarButton.tintColor = .systemCyan
-        
-        navigationItem.leftBarButtonItem = leftBarButton
-        navigationItem.rightBarButtonItem = rightBarButton
+    @objc private func leftBarButtonTapped() {
+        dismiss(animated: true)
     }
     
-    @objc private func closeBarButtonTapped() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @objc private func addToWatchlistBarButtonTapped() {
-        viewModel.addToWatchlist()
+    @objc private func rightBarButtonTapped() {
+        if viewModel.isInWatchlist() {
+            viewModel.removeFromWatchlist()
+        } else {
+            viewModel.addToWatchlist()
+        }
+        
+        UIView.animate(withDuration: 1) {
+            let isInWatchlist = self.viewModel.isInWatchlist()
+            
+            self.rightBarButton.image = UIImage(systemName: isInWatchlist ? "clock.badge.xmark" : "clock.badge.checkmark")
+            self.rightBarButton.tintColor = isInWatchlist ? .systemRed : .systemGreen
+        }
     }
 }

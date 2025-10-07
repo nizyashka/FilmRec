@@ -26,4 +26,16 @@ final class RecommendedFilmViewModel {
         
         filmsStore.addFilmToCoreData(id: film.id, request: requestCoreData)
     }
+    
+    func removeFromWatchlist() {
+        filmsStore.removeFilmFromCoreData(by: film.id)
+    }
+    
+    func isInWatchlist() -> Bool {
+        if (filmsStore.fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == film.id })) != nil {
+            return true
+        } else {
+            return false
+        }
+    }
 }

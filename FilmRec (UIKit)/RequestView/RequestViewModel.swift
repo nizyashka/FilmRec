@@ -12,11 +12,13 @@ final class RequestViewModel {
     
     var request: Request
     var requestCoreData: RequestCoreData
+    private(set) var previouslyRecommendedFilms: [Film] = []
     
     let openAIService = OpenAIService.shared
     let tmdbService = TMDBService.shared
     let openAIResponseObjectDecoder = OpenAIResponseObjectDecoder.shared
     let tmdbResponseObjectDecoder = TMDBResponseObjectDecoder.shared
+    let filmsStore = FilmsStore.shared
     
     init(request: Request, requestCoreData: RequestCoreData) {
         self.request = request
@@ -49,6 +51,7 @@ final class RequestViewModel {
         getFilmDetails(for: prompt) { result in
             switch result {
             case .success(let film):
+                self.filmsStore.addFilmToCoreData(id: film.id, request: self.requestCoreData)
                 completion(.success(film))
             case .failure(let error):
                 completion(.failure(error))
@@ -112,6 +115,43 @@ final class RequestViewModel {
             case .failure(let error):
                 completion(.failure(error))
             }
+        }
+    }
+    
+    func loadPreviouslyRecommendedFilms(completion: @escaping (() -> Void)) {
+        guard let previouslyRecommendedFilmsCoreData = requestCoreData.films as? Set<FilmCoreData> else {
+            assertionFailure("[RequestViewModel] - loadPreviouslyRecommendedFilms: Error getting previously recommended films for a request.")
+            completion()
+            return
+        }
+        
+        var previouslyRecommendedFilms: [Film] = []
+        let group = DispatchGroup()
+        
+        for filmCoreData in previouslyRecommendedFilmsCoreData {
+            group.enter()
+            self.tmdbService.fetchFilmByID(filmCoreData.id) { result in
+                switch result {
+                case .success(let data):
+                    guard let responseObject = self.tmdbResponseObjectDecoder.decodeTMDBResponseForFilmByID(from: data) else {
+                        assertionFailure("[WatchlistViewModel] - loadFilmsFromWatchlist: Error decoding data.")
+                        completion()
+                        return
+                    }
+                    
+                    previouslyRecommendedFilms.append(responseObject)
+                case .failure(let error):
+                    assertionFailure("[WatchlistViewModel] - loadFilmsFromWatchlist: Error fetching a film from TMDB. Error - \(error.localizedDescription)")
+                    completion()
+                    return
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: .main) {
+            self.previouslyRecommendedFilms = previouslyRecommendedFilms
+            completion()
         }
     }
 }

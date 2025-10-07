@@ -22,6 +22,7 @@ final class OpenAIResponseObjectDecoder {
                 print("[OpenAIResponseObjectDecoder] - decodeOpenAIResponse: Something is wrong with response.")
                 return nil
             }
+            
             return responseText
         } catch {
             print("[OpenAIResponseObjectDecoder] - decodeOpenAIResponse: Error decoding Open AI response object.")

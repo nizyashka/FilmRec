@@ -39,10 +39,12 @@ final class RequestCreationViewController: UIViewController {
     
     private lazy var requestNameTextField: PaddedTextField = {
         let textField = PaddedTextField()
+        textField.delegate = self
         textField.placeholder = "New request"
         textField.backgroundColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.masksToBounds = true
+        textField.returnKeyType = UIReturnKeyType.done
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -204,5 +206,12 @@ extension RequestCreationViewController: UITableViewDelegate, UITableViewDataSou
         navigationController?.pushViewController(optionsTabViewController, animated: true)
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension RequestCreationViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // убираем фокус
+        return true
     }
 }

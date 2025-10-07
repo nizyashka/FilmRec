@@ -10,16 +10,6 @@ import UIKit
 final class FilmCardCell: UICollectionViewCell {
     static let reuseIdentifier = "FilmCardCell"
     
-    private lazy var stabView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .gray
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     lazy var filmPosterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 8
@@ -41,19 +31,11 @@ final class FilmCardCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-//        contentView.backgroundColor = .backgroundWhite
-        
-//        contentView.addSubview(stabView)
         contentView.addSubview(filmPosterImageView)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-//            stabView.heightAnchor.constraint(equalToConstant: 120),
-//            stabView.widthAnchor.constraint(equalToConstant: 80),
-//            stabView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            stabView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
             filmPosterImageView.heightAnchor.constraint(equalToConstant: 120),
             filmPosterImageView.widthAnchor.constraint(equalToConstant: 80),
             filmPosterImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),

@@ -38,16 +38,40 @@ final class FilmsStore: NSObject {
     private override init() { }
     
     func addFilmToCoreData(id: Int32, request: RequestCoreData) {
-        let film = FilmCoreData(context: context)
+        if let existingFilm = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == id }) {
+            request.addToFilms(existingFilm)
+            existingFilm.addToRequests(request)
+        } else {
+            let film = FilmCoreData(context: context)
+            
+            film.id = id
+            
+            request.addToFilms(film)
+            
+            do {
+                try CoreDataStack.shared.saveContext()
+                return
+            } catch {
+                assertionFailure("[FilmsStore] - addFilmToCoreData: Failed to add film to Core Data.")
+                return
+            }
+        }
+    }
+    
+    func removeFilmFromCoreData(by id: Int32) {
+        guard let filmCoreData = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == id }) else {
+            assertionFailure("[FilmsStore] - removeFilmFromCoreData: Failed to find a film with this ID in Core Data.")
+            return
+        }
         
-        film.id = id
-        
-        request.addToFilms(film)
+        context.delete(filmCoreData)
         
         do {
             try CoreDataStack.shared.saveContext()
+            return
         } catch {
-            assertionFailure("[FilmsStore] - addFilmToCoreData: Failed to add film to Core Data.")
+            assertionFailure("[FilmsStore] - removeFilmFromCoreData: Failed to remove film from Core Data.")
+            return
         }
     }
 }
