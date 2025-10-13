@@ -1,10 +1,3 @@
-//
-//  WatchlistStore.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 12.10.2025.
-//
-
 import CoreData
 
 protocol WatchlistStoreDelegate: AnyObject {

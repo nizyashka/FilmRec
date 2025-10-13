@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 18.04.2025.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -33,7 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         tabBarController.delegate = self
-//        tabBarController.tabBar.backgroundColor = .black
         tabBarController.viewControllers = [firstNavigationController, requestCreationViewController, thirdNavigationController]
         
         window?.rootViewController = tabBarController

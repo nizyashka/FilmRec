@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 18.04.2025.
-//
-
 import UIKit
 
 class MyRequestsViewController: UIViewController {
@@ -103,12 +96,6 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
-//        let requestObject = Request(name: request.name,
-//                              genre: request.genre,
-//                              country: request.country,
-//                              director: request.director,
-//                              decade: request.decade)
         
         let requestViewModel = RequestViewModel(request: request, requestCoreData: requestCoreData)
         

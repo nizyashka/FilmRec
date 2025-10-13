@@ -1,11 +1,3 @@
-//
-//  RequestCell.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 19.05.2025.
-//
-
-import Foundation
 import UIKit
 
 final class RequestCell: UITableViewCell {

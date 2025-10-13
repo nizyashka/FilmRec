@@ -1,10 +1,3 @@
-//
-//  FilmCardCell.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 08.09.2025.
-//
-
 import UIKit
 
 final class FilmCardCell: UICollectionViewCell {

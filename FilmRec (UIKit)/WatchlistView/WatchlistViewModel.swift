@@ -1,10 +1,3 @@
-//
-//  WatchlistViewModel.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 10.09.2025.
-//
-
 import Foundation
 
 final class WatchlistViewModel {
@@ -24,11 +17,6 @@ final class WatchlistViewModel {
     func loadFilmsFromWatchlist() {
         var filmsInWatchlist: [(index: Int, film: Film)] = []
         let group = DispatchGroup()
-        
-//        guard let filmsCoreData = self.filmsStore.fetchedFilmsResultController.fetchedObjects?.filter( { $0.isInWatchlist } ) else {
-//            assertionFailure("[WatchlistViewModel] - loadFilmsFromWatchlist: Error fetching films from Core Data.")
-//            return
-//        }
         
         guard let filmsInWatchlistCoreData = watchlistStore.fetchedWatchlistResultController.fetchedObjects else {
             assertionFailure("[WatchlistViewModel] - loadFilmsFromWatchlist: Error fetching films in watchlist from Core Data.")

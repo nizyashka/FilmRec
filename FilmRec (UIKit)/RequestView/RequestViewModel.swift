@@ -1,10 +1,3 @@
-//
-//  RequestViewModel.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 29.08.2025.
-//
-
 import Foundation
 
 final class RequestViewModel {
@@ -86,7 +79,6 @@ final class RequestViewModel {
                 
                 completion(.success(decodedResponse))
             case .failure(let error):
-                print(error)
                 completion(.failure(error))
             }
         }

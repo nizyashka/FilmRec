@@ -1,10 +1,3 @@
-//
-//  CreatePrompt.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 19.04.2025.
-//
-
 import Foundation
 
 final class PromptCreation {
@@ -86,8 +79,6 @@ final class PromptCreation {
         }
         
         prompt += "In your response write only the title of the film without brackets or other symbols and a release year of that film. The title and the year have to be divided by / without spaces."
-        
-        //print(prompt)
         
         return(prompt)
     }

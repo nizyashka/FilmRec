@@ -1,10 +1,3 @@
-//
-//  TrackerCreationViewController.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 01.07.2025.
-//
-
 import UIKit
 
 final class RequestCreationViewController: UIViewController {
@@ -160,7 +153,7 @@ final class RequestCreationViewController: UIViewController {
             viewModel.saveWithoutExecution(requestName: requestName)
             dismiss(animated: true)
         } else {
-            // Показать алерт
+            //TODO: - Показать алерт
         }
     }
     
@@ -211,7 +204,7 @@ extension RequestCreationViewController: UITableViewDelegate, UITableViewDataSou
 
 extension RequestCreationViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder() // убираем фокус
+        textField.resignFirstResponder()
         return true
     }
 }

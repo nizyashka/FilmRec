@@ -1,10 +1,3 @@
-//
-//  RecommendedFilmView.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 30.08.2025.
-//
-
 import UIKit
 import Kingfisher
 
@@ -32,12 +25,6 @@ final class RecommendedFilmViewController: UIViewController {
         
         return rightBarButton
     }()
-    
-//    private lazy var rightBarButtonImage: UIImage = {
-//        let systemName = viewModel.isInWatchlist() ? "clock.badge.xmark" : "clock.badge.checkmark"
-//        
-//        return UIImage(systemName: systemName)!
-//    }()
     
     private lazy var filmPosterImageView: UIImageView = {
         guard let posterURL = viewModel.film.posterPath,
@@ -152,7 +139,6 @@ final class RecommendedFilmViewController: UIViewController {
             filmTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             filmTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-//            filmRatingLabel.leadingAnchor.constraint(equalTo: filmTitleLabel.trailingAnchor, constant: 16),
             filmRatingLabel.topAnchor.constraint(equalTo: filmTitleLabel.bottomAnchor, constant: 8),
             filmRatingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
@@ -160,7 +146,6 @@ final class RecommendedFilmViewController: UIViewController {
             filmRatingImageView.centerYAnchor.constraint(equalTo: filmRatingLabel.centerYAnchor),
             
             filmOverviewLabel.topAnchor.constraint(equalTo: filmRatingLabel.bottomAnchor, constant: 16),
-//            filmOverviewLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
             filmOverviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             filmOverviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])

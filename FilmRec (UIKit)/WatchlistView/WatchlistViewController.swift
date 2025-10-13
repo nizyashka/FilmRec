@@ -1,10 +1,3 @@
-//
-//  WatchlistViewController.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 20.05.2025.
-//
-
 import UIKit
 import Kingfisher
 

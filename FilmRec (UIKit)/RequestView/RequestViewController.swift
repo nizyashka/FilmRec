@@ -1,10 +1,3 @@
-//
-//  RequestViewController.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 19.05.2025.
-//
-
 import UIKit
 
 final class RequestViewController: UIViewController {
@@ -133,7 +126,7 @@ final class RequestViewController: UIViewController {
             previouslyRecommendedLabel.topAnchor.constraint(equalTo: optionsTabsTableView.bottomAnchor, constant: 32),
             previouslyRecommendedLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             
-            //Добавить высоту
+            //TODO: - Изменить высоту
             previouslyRecommendedFilmsCollectionView.heightAnchor.constraint(equalToConstant: 4.25*120),
             previouslyRecommendedFilmsCollectionView.topAnchor.constraint(equalTo: previouslyRecommendedLabel.bottomAnchor, constant: 16),
             previouslyRecommendedFilmsCollectionView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
@@ -221,8 +214,6 @@ extension RequestViewController: UICollectionViewDelegateFlowLayout, UICollectio
         let navigationController = UINavigationController(rootViewController: recommendedFilmViewController)
         navigationController.modalPresentationStyle = .pageSheet
         self.present(navigationController, animated: true)
-//        recommendedFilmViewController.modalPresentationStyle = .pageSheet
-//        present(recommendedFilmViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

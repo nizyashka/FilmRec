@@ -1,10 +1,3 @@
-//
-//  RequestCreationViewModel.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 04.08.2025.
-//
-
 import Foundation
 
 final class RequestCreationViewModel {
@@ -26,8 +19,6 @@ final class RequestCreationViewModel {
             country: pickedCountry,
             director: pickedDirector,
             decade: pickedDecade)
-        
-//        print(requestName, pickedGenre, pickedCountry, pickedDirector, pickedDecade) // Создать объект Request
     }
     
     func getTabNameAndPickedOption(at index: Int) -> (String, String) {

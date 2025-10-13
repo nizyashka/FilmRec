@@ -1,10 +1,3 @@
-//
-//  OptionsViewModel.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 19.08.2025.
-//
-
 import Foundation
 
 protocol OptionsViewModelDelegate: AnyObject {

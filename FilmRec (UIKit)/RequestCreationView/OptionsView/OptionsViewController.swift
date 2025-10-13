@@ -1,10 +1,3 @@
-//
-//  OptionsTabViewController.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 04.08.2025.
-//
-
 import UIKit
 
 final class OptionsViewController: UIViewController {
@@ -115,8 +108,6 @@ extension OptionsViewController: UITableViewDelegate, UITableViewDataSource {
             
             viewModel.selectedOption = optionNameLabelText
             selectedCell.checkmarkImageView.isHidden = false
-            
-            print(viewModel.selectedOption)
         } else {
             assertionFailure("[OptionsViewController] - tableView: Error getting a cell from indexPath.")
             return

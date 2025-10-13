@@ -1,10 +1,3 @@
-//
-//  LockedOptionsTabCell.swift
-//  FilmRec (UIKit)
-//
-//  Created by Алексей Непряхин on 30.08.2025.
-//
-
 import UIKit
 
 final class LockedOptionsTabCell: UITableViewCell {
