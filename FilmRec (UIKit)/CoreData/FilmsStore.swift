@@ -46,6 +46,7 @@ final class FilmsStore: NSObject {
             
             film.id = id
             
+            film.addToRequests(request)
             request.addToFilms(film)
             
             do {

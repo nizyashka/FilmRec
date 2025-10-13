@@ -2,8 +2,8 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="24G231" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="FilmCoreData" representedClassName="FilmCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="isInWatchlist" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="requests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RequestCoreData" inverseName="films" inverseEntity="RequestCoreData"/>
+        <relationship name="watchlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WatchlistCoreData" inverseName="film" inverseEntity="WatchlistCoreData"/>
     </entity>
     <entity name="RequestCoreData" representedClassName="RequestCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="country" attributeType="String"/>
@@ -13,5 +13,10 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="films" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilmCoreData" inverseName="requests" inverseEntity="FilmCoreData"/>
+    </entity>
+    <entity name="WatchlistCoreData" representedClassName="WatchlistCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="film" maxCount="1" deletionRule="Nullify" destinationEntity="FilmCoreData" inverseName="watchlist" inverseEntity="FilmCoreData"/>
     </entity>
 </model>
