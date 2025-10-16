@@ -24,7 +24,7 @@ final class RequestViewModel {
         
         switch optionsTabName {
         case "Genre":
-            pickedOption = request.name
+            pickedOption = request.genre
         case "Country":
             pickedOption = request.country
         case "Director":

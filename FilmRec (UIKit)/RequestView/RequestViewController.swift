@@ -144,6 +144,12 @@ final class RequestViewController: UIViewController {
         viewModel.executeRequest { result in
             switch result {
             case .success(let film):
+                self.viewModel.loadPreviouslyRecommendedFilms {
+                    DispatchQueue.main.async {
+                        self.previouslyRecommendedFilmsCollectionView.reloadData()
+                    }
+                }
+                
                 DispatchQueue.main.async {
                     let recommendedFilmViewModel = RecommendedFilmViewModel(requestCoreData: self.viewModel.requestCoreData, film: film)
                     let recommendedFilmViewController = RecommendedFilmViewController(viewModel: recommendedFilmViewModel)
