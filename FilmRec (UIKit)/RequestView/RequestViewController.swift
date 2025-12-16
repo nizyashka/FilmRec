@@ -73,6 +73,8 @@ final class RequestViewController: UIViewController {
     
     private let viewModel: RequestViewModel
     
+    private var previouslyRecommendedFilmsCollectionViewHeightConstraint: NSLayoutConstraint!
+    
     init(viewModel: RequestViewModel) {
         self.viewModel = viewModel
         
@@ -90,8 +92,6 @@ final class RequestViewController: UIViewController {
             self.setupUI()
             self.setupConstraints()
         }
-        
-        
     }
     
     private func setupUI() {
@@ -108,6 +108,8 @@ final class RequestViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        previouslyRecommendedFilmsCollectionViewHeightConstraint = previouslyRecommendedFilmsCollectionView.heightAnchor.constraint(equalToConstant: countHeightForCollectionView())
+        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -126,8 +128,7 @@ final class RequestViewController: UIViewController {
             previouslyRecommendedLabel.topAnchor.constraint(equalTo: optionsTabsTableView.bottomAnchor, constant: 32),
             previouslyRecommendedLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             
-            //TODO: - Изменить высоту
-            previouslyRecommendedFilmsCollectionView.heightAnchor.constraint(equalToConstant: 4.25*120),
+            previouslyRecommendedFilmsCollectionViewHeightConstraint,
             previouslyRecommendedFilmsCollectionView.topAnchor.constraint(equalTo: previouslyRecommendedLabel.bottomAnchor, constant: 16),
             previouslyRecommendedFilmsCollectionView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             previouslyRecommendedFilmsCollectionView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
@@ -147,6 +148,8 @@ final class RequestViewController: UIViewController {
                 self.viewModel.loadPreviouslyRecommendedFilms {
                     DispatchQueue.main.async {
                         self.previouslyRecommendedFilmsCollectionView.reloadData()
+                        self.previouslyRecommendedFilmsCollectionView.layoutIfNeeded()
+                        self.previouslyRecommendedFilmsCollectionViewHeightConstraint.constant = self.previouslyRecommendedFilmsCollectionView.collectionViewLayout.collectionViewContentSize.height
                     }
                 }
                 
@@ -161,6 +164,21 @@ final class RequestViewController: UIViewController {
                 assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
             }
         }
+    }
+    
+    private func countHeightForCollectionView() -> CGFloat {
+        var numberOfRows = 0
+        
+        if viewModel.previouslyRecommendedFilms.count % 4 > 0 {
+            numberOfRows = (viewModel.previouslyRecommendedFilms.count / 4) + 1
+        } else {
+            numberOfRows = viewModel.previouslyRecommendedFilms.count / 4
+        }
+        
+        print(viewModel.previouslyRecommendedFilms.count)
+        print(numberOfRows)
+        
+        return CGFloat(numberOfRows * 128)
     }
 }
 
@@ -223,6 +241,14 @@ extension RequestViewController: UICollectionViewDelegateFlowLayout, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: 80, height: 120)
+        return CGSize(width: 80, height: 120)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
     }
 }

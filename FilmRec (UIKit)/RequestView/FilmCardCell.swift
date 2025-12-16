@@ -5,6 +5,7 @@ final class FilmCardCell: UICollectionViewCell {
     
     lazy var filmPosterImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false

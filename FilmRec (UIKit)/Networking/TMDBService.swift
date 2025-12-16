@@ -102,7 +102,6 @@ final class TMDBService {
                 completion(.failure(NetworkingErrors.noResponse))
                 return
             }
-            print(response.statusCode)
             
             guard let data = data else {
                 print("[TMDBService] - fetchFilmByID: Received no data")
