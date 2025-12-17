@@ -204,9 +204,6 @@ final class RequestViewController: UIViewController {
             numberOfRows = viewModel.previouslyRecommendedFilms.count / 4
         }
         
-        print(viewModel.previouslyRecommendedFilms.count)
-        print(numberOfRows)
-        
         return CGFloat(numberOfRows * 128)
     }
 }

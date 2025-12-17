@@ -39,7 +39,13 @@ final class RequestViewModel {
     }
     
     func executeRequest(completion: @escaping (Result<Film, Error>) -> Void) {
-        let prompt = PromptCreation.shared.createPrompt(for: request)
+        var films: [String] = []
+        
+        for film in previouslyRecommendedFilms {
+            films.append(film.originalTitle)
+        }
+        
+        let prompt = PromptCreation.shared.createPrompt(for: request, exclude: films)
         
         getFilmDetails(for: prompt) { result in
             switch result {
