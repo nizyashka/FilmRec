@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         firstNavigationController.tabBarItem = UITabBarItem(title: "My requests", image: UIImage(systemName: "square.stack"), tag: 0)
         
         let requestCreationViewController = UIViewController()
-        requestCreationViewController.tabBarItem = UITabBarItem(title: "New request", image: UIImage(named: "plus_circle")?.withRenderingMode(.alwaysOriginal), tag: 1)
+        requestCreationViewController.tabBarItem = UITabBarItem(title: "New request", image: UIImage(systemName: "plus.circle")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal), tag: 1)
         
         let watchlistViewModel = WatchlistViewModel()
         let watchlistViewController = WatchlistViewController(viewModel: watchlistViewModel)
