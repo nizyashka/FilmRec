@@ -12,6 +12,7 @@ final class RequestViewModel {
     let openAIResponseObjectDecoder = OpenAIResponseObjectDecoder.shared
     let tmdbResponseObjectDecoder = TMDBResponseObjectDecoder.shared
     let filmsStore = FilmsStore.shared
+    let requestsStore = RequestsStore.shared
     
     init(request: Request, requestCoreData: RequestCoreData) {
         self.request = request
@@ -59,7 +60,11 @@ final class RequestViewModel {
         }
     }
     
-    func getResponseFromOpenAI(with prompt: String, completion: @escaping (Result<Array<String>, Error>) -> Void) {
+    func deleteRequest() {
+        requestsStore.removeRequestFromCoreData(requestCoreData)
+    }
+    
+    private func getResponseFromOpenAI(with prompt: String, completion: @escaping (Result<Array<String>, Error>) -> Void) {
         openAIService.fetchOpenAIResponse(with: prompt) { result in
             switch result {
             case .success(let data):
@@ -75,7 +80,7 @@ final class RequestViewModel {
         }
     }
     
-    func getFilmFromTMDB(titled film: String, shotIn year: String, completion: @escaping (Result<TMDBResponseObject, Error>) -> Void) {
+    private func getFilmFromTMDB(titled film: String, shotIn year: String, completion: @escaping (Result<TMDBResponseObject, Error>) -> Void) {
         tmdbService.fetchTMDBResponse(for: film, shotIn: year) { result in
             switch result {
             case .success(let data):
@@ -90,7 +95,7 @@ final class RequestViewModel {
         }
     }
     
-    func getFilmDetails(for prompt: String, completion: @escaping (Result<Film, Error>) -> Void) {
+    private func getFilmDetails(for prompt: String, completion: @escaping (Result<Film, Error>) -> Void) {
         getResponseFromOpenAI(with: prompt) { result in
             switch result {
             case .success(let array):

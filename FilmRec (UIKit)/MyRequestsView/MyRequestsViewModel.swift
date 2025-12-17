@@ -25,7 +25,8 @@ final class MyRequestsViewModel {
         var requests: [Request] = []
         
         for requestCoreData in requestsCoreData {
-            guard let name = requestCoreData.name,
+            guard let id = requestCoreData.id,
+                  let name = requestCoreData.name,
                   let genre = requestCoreData.genre,
                   let country = requestCoreData.country,
                   let director = requestCoreData.director,
@@ -35,6 +36,7 @@ final class MyRequestsViewModel {
             }
             
             let request = Request(
+                id: id,
                 name: name,
                 genre: genre,
                 country: country,

@@ -45,6 +45,29 @@ final class RequestsStore: NSObject {
             assertionFailure("[RequestsStore] - addRequestToCoreData: Failed to add request to Core Data.")
         }
     }
+    
+    func removeRequestFromCoreData(_ requestCoreData: RequestCoreData) {
+        guard let films = requestCoreData.films as? Set<FilmCoreData> else {
+            assertionFailure("[RequestsStore] - removeRequestFromCoreData: Error getting films for request.")
+            return
+        }
+        
+        if !films.isEmpty {
+            for film in films {
+                film.removeFromRequests(requestCoreData)
+            }
+        }
+        
+        context.delete(requestCoreData)
+        
+        do {
+            try CoreDataStack.shared.saveContext()
+            return
+        } catch {
+            assertionFailure("[RequestsStore] - removeRequestFromCoreData: Failed to remove request from Core Data.")
+            return
+        }
+    }
 }
 
 extension RequestsStore: NSFetchedResultsControllerDelegate {

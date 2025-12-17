@@ -192,7 +192,8 @@ final class RequestViewController: UIViewController {
     }
     
     @objc private func deleteRequestButtonTapped() {
-        
+        navigationController?.popViewController(animated: true)
+        viewModel.deleteRequest()
     }
     
     private func countHeightForCollectionView() -> CGFloat {
