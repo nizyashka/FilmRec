@@ -58,6 +58,16 @@ final class RequestViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var buttonsStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 16
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
     private lazy var executeRequestButton: UIButton = {
         let button = UIButton()
         button.setTitle("Execute", for: .normal)
@@ -67,6 +77,19 @@ final class RequestViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.addTarget(self, action: #selector(executeRequestButtonTapped), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    private lazy var deleteRequestButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Delete", for: .normal)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.addTarget(self, action: #selector(deleteRequestButtonTapped), for: .touchUpInside)
         
         return button
     }()
@@ -104,7 +127,9 @@ final class RequestViewController: UIViewController {
         scrollView.addSubview(optionsTabsTableView)
         scrollView.addSubview(previouslyRecommendedLabel)
         scrollView.addSubview(previouslyRecommendedFilmsCollectionView)
-        view.addSubview(executeRequestButton)
+        view.addSubview(buttonsStack)
+        buttonsStack.addArrangedSubview(executeRequestButton)
+        buttonsStack.addArrangedSubview(deleteRequestButton)
     }
     
     private func setupConstraints() {
@@ -134,10 +159,10 @@ final class RequestViewController: UIViewController {
             previouslyRecommendedFilmsCollectionView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
             previouslyRecommendedFilmsCollectionView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
             
-            executeRequestButton.heightAnchor.constraint(equalToConstant: 60),
-            executeRequestButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            executeRequestButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            executeRequestButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            buttonsStack.heightAnchor.constraint(equalToConstant: 45),
+            buttonsStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            buttonsStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            buttonsStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
@@ -164,6 +189,10 @@ final class RequestViewController: UIViewController {
                 assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
             }
         }
+    }
+    
+    @objc private func deleteRequestButtonTapped() {
+        
     }
     
     private func countHeightForCollectionView() -> CGFloat {
