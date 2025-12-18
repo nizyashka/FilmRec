@@ -51,7 +51,7 @@ final class RequestViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(FilmCardCell.self, forCellWithReuseIdentifier: FilmCardCell.reuseIdentifier)
-        collectionView.backgroundColor = .backgroundWhite
+        collectionView.backgroundColor = .background
         collectionView.isScrollEnabled = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -118,7 +118,7 @@ final class RequestViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .backgroundWhite
+        view.backgroundColor = .background
         navigationItem.largeTitleDisplayMode = .never
         title = viewModel.request.name
         

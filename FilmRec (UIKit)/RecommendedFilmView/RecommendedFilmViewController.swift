@@ -115,7 +115,7 @@ final class RecommendedFilmViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .backgroundWhite
+        view.backgroundColor = .background
         
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.rightBarButtonItem = rightBarButton

@@ -43,7 +43,7 @@ final class OptionsViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .backgroundWhite
+        view.backgroundColor = .background
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
         title = viewModel.optionsTabName

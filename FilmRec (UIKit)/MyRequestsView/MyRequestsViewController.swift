@@ -8,7 +8,7 @@ class MyRequestsViewController: UIViewController {
         
         tableView.register(RequestCell.self, forCellReuseIdentifier: RequestCell.reuseIdentifier)
         
-        tableView.backgroundColor = .backgroundWhite
+        tableView.backgroundColor = .background
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -83,7 +83,7 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         requestCell.nameLabel.text = viewModel?.requests[indexPath.row].name
-        requestCell.backgroundColor = .backgroundWhite
+        requestCell.backgroundColor = .background
         
         return requestCell
     }
