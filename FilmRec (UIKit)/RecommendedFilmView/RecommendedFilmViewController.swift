@@ -2,6 +2,13 @@ import UIKit
 import Kingfisher
 
 final class RecommendedFilmViewController: UIViewController {
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return scrollView
+    }()
+    
     private lazy var leftBarButton: UIBarButtonItem = {
         let leftBarButton = UIBarButtonItem(title: "Close",
                                             style: .plain,
@@ -120,34 +127,40 @@ final class RecommendedFilmViewController: UIViewController {
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.rightBarButtonItem = rightBarButton
         
-        view.addSubview(filmPosterImageView)
-        view.addSubview(filmTitleLabel)
-        view.addSubview(filmRatingLabel)
-        view.addSubview(filmRatingImageView)
-        view.addSubview(filmOverviewLabel)
+        view.addSubview(scrollView)
+        scrollView.addSubview(filmPosterImageView)
+        scrollView.addSubview(filmTitleLabel)
+        scrollView.addSubview(filmRatingLabel)
+        scrollView.addSubview(filmRatingImageView)
+        scrollView.addSubview(filmOverviewLabel)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
             filmPosterImageView.heightAnchor.constraint(equalToConstant: 360),
             filmPosterImageView.widthAnchor.constraint(equalToConstant: 240),
-            filmPosterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            filmPosterImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filmPosterImageView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 32),
+            filmPosterImageView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             
             filmTitleLabel.topAnchor.constraint(equalTo: filmPosterImageView.bottomAnchor, constant: 16),
-            filmTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            filmTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            filmTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filmTitleLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            filmTitleLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
+            filmTitleLabel.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             
             filmRatingLabel.topAnchor.constraint(equalTo: filmTitleLabel.bottomAnchor, constant: 8),
-            filmRatingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filmRatingLabel.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             
             filmRatingImageView.leadingAnchor.constraint(equalTo: filmRatingLabel.trailingAnchor, constant: 8),
             filmRatingImageView.centerYAnchor.constraint(equalTo: filmRatingLabel.centerYAnchor),
             
             filmOverviewLabel.topAnchor.constraint(equalTo: filmRatingLabel.bottomAnchor, constant: 16),
-            filmOverviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            filmOverviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            filmOverviewLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            filmOverviewLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
         ])
     }
     
