@@ -27,6 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         tabBarController.delegate = self
         tabBarController.viewControllers = [firstNavigationController, requestCreationViewController, thirdNavigationController]
+        tabBarController.tabBar.tintColor = .systemBlue
+        tabBarController.tabBar.unselectedItemTintColor = .systemGray
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

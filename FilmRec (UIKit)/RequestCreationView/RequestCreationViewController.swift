@@ -93,6 +93,7 @@ final class RequestCreationViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .background
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.largeTitleDisplayMode = .never
         title = "New request"
         

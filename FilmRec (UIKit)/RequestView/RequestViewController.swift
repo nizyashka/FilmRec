@@ -119,6 +119,7 @@ final class RequestViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .background
+        navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.largeTitleDisplayMode = .never
         title = viewModel.request.name
         

@@ -56,6 +56,7 @@ class MyRequestsViewController: UIViewController {
     
     private func configureNavigationTitle() {
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.largeTitleDisplayMode = .always
         title = "My requests"
     }
