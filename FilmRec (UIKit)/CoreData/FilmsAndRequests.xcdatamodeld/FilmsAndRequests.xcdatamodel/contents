@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="24G231" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24299" systemVersion="24G325" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="FilmCoreData" representedClassName="FilmCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="dateRecommended" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="originalTitle" attributeType="String"/>
+        <attribute name="overview" optional="YES" attributeType="String"/>
+        <attribute name="posterPath" optional="YES" attributeType="String"/>
+        <attribute name="voteAvarage" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="requests" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RequestCoreData" inverseName="films" inverseEntity="RequestCoreData"/>
         <relationship name="watchlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WatchlistCoreData" inverseName="film" inverseEntity="WatchlistCoreData"/>
     </entity>
     <entity name="RequestCoreData" representedClassName="RequestCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="color" attributeType="Transformable" customClassName="NSData"/>
         <attribute name="country" attributeType="String"/>
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateExecuted" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="decade" attributeType="String"/>
         <attribute name="director" attributeType="String"/>
         <attribute name="genre" attributeType="String"/>
