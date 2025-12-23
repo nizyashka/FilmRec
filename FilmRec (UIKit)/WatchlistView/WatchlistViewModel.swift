@@ -5,7 +5,7 @@ final class WatchlistViewModel {
     let tmdbService = TMDBService.shared
     let tmdbResponseObjectDecoder = TMDBResponseObjectDecoder.shared
     
-    private(set) var filmsInWatchlist: [Film] = []
+    private(set) var filmsInWatchlist: [FilmTMDB] = []
     
     var controllerDidChangeContent: (() -> Void)?
     
@@ -15,7 +15,7 @@ final class WatchlistViewModel {
     }
     
     func loadFilmsFromWatchlist() {
-        var filmsInWatchlist: [(index: Int, film: Film)] = []
+        var filmsInWatchlist: [(index: Int, film: FilmTMDB)] = []
         let group = DispatchGroup()
         
         guard let filmsInWatchlistCoreData = watchlistStore.fetchedWatchlistResultController.fetchedObjects else {

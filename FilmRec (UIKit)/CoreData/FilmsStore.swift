@@ -13,7 +13,7 @@ final class FilmsStore: NSObject {
     lazy var fetchedFilmsResultController: NSFetchedResultsController<FilmCoreData> = {
         let fetchRequest = FilmCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \FilmCoreData.id, ascending: true)
+            NSSortDescriptor(keyPath: \FilmCoreData.originalTitle, ascending: true)
         ]
         
         let fetchedFilmsResultController = NSFetchedResultsController(
@@ -30,24 +30,27 @@ final class FilmsStore: NSObject {
     
     private override init() { }
     
-    func addFilmToCoreData(id: Int32, request: RequestCoreData) {
-        if let existingFilm = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == id }) {
-            request.addToFilms(existingFilm)
-            existingFilm.addToRequests(request)
+    func addFilmToCoreData(filmTMDB: FilmTMDB, requestCoreData: RequestCoreData) {
+        if let existingFilm = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == filmTMDB.id }) {
+            requestCoreData.addToFilms(existingFilm)
+            existingFilm.addToRequests(requestCoreData)
         } else {
-            let film = FilmCoreData(context: context)
+            let filmCoreData = FilmCoreData(context: context)
             
-            film.id = id
+            filmCoreData.id = filmTMDB.id
+            filmCoreData.originalTitle = filmTMDB.originalTitle
+            filmCoreData.overview = filmTMDB.overview
+            filmCoreData.posterPath = filmTMDB.posterPath
+            filmCoreData.voteAverage = filmTMDB.voteAverage ?? 0.0
+            filmCoreData.dateRecommended = Date()
             
-            film.addToRequests(request)
-            request.addToFilms(film)
+            filmCoreData.addToRequests(requestCoreData)
+            requestCoreData.addToFilms(filmCoreData)
             
             do {
                 try CoreDataStack.shared.saveContext()
-                return
             } catch {
                 assertionFailure("[FilmsStore] - addFilmToCoreData: Failed to add film to Core Data.")
-                return
             }
         }
     }

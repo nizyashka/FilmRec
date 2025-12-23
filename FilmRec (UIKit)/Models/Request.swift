@@ -1,10 +1,13 @@
-import Foundation
+import UIKit
 
 struct Request {
     let id: UUID
-    var name: String
-    var genre: String
-    var country: String
-    var director: String
-    var decade: String
+    let name: String
+    let genre: String
+    let country: String
+    let director: String
+    let decade: String
+    let color: UIColor
+    let dateCreated: Date
+    var dateExecuted: Date
 }

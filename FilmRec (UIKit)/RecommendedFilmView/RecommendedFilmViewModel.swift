@@ -5,9 +5,9 @@ final class RecommendedFilmViewModel {
     let watchlistStore = WatchlistStore.shared
     
     let requestCoreData: RequestCoreData?
-    let film: Film
+    let film: FilmTMDB
     
-    init(requestCoreData: RequestCoreData? = nil, film: Film) {
+    init(requestCoreData: RequestCoreData? = nil, film: FilmTMDB) {
         self.requestCoreData = requestCoreData
         self.film = film
     }

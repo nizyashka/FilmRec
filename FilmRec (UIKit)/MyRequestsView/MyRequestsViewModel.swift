@@ -1,3 +1,5 @@
+import UIKit
+
 final class MyRequestsViewModel {
     let requestsStore = RequestsStore.shared
     
@@ -30,7 +32,10 @@ final class MyRequestsViewModel {
                   let genre = requestCoreData.genre,
                   let country = requestCoreData.country,
                   let director = requestCoreData.director,
-                  let decade = requestCoreData.decade else {
+                  let decade = requestCoreData.decade,
+                  let color = requestCoreData.color,
+                  let dateCreated = requestCoreData.dateCreated,
+                  let dateExecuted = requestCoreData.dateExecuted else {
                 assertionFailure("[RequestsViewModel] - requestCoreDataToRequest: Error getting properties from RequestCoreData.")
                 return requests
             }
@@ -41,11 +46,18 @@ final class MyRequestsViewModel {
                 genre: genre,
                 country: country,
                 director: director,
-                decade: decade)
+                decade: decade,
+                color: dataToColor(color)?.withAlphaComponent(0.63) ?? UIColor.systemOrange.withAlphaComponent(0.63),
+                dateCreated: dateCreated,
+                dateExecuted: dateExecuted)
             
             requests.append(request)
         }
         
         return requests
+    }
+    
+    private func dataToColor(_ data: Data) -> UIColor? {
+        try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data)
     }
 }

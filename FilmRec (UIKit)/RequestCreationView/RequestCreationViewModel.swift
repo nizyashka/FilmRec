@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 final class RequestCreationViewModel {
     var updatePickedOptionLabel: (IndexPath, String) -> Void = { _, _ in }
@@ -13,12 +13,17 @@ final class RequestCreationViewModel {
     private let requestsStore = RequestsStore.shared
     
     func saveWithoutExecution(requestName: String) {
-        requestsStore.addRequestToCoreData(
-            name: requestName,
-            genre: pickedGenre,
-            country: pickedCountry,
-            director: pickedDirector,
-            decade: pickedDecade)
+        let request = Request(id: UUID(),
+                              name: requestName,
+                              genre: pickedGenre,
+                              country: pickedCountry,
+                              director: pickedDirector,
+                              decade: pickedDecade,
+                              color: UIColor.systemMint,
+                              dateCreated: Date(),
+                              dateExecuted: Date())
+        
+        requestsStore.addRequestToCoreData(request: request)
     }
     
     func getTabNameAndPickedOption(at index: Int) -> (String, String) {

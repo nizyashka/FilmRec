@@ -5,7 +5,7 @@ final class RequestViewModel {
     
     var request: Request
     var requestCoreData: RequestCoreData
-    private(set) var previouslyRecommendedFilms: [Film] = []
+    private(set) var previouslyRecommendedFilms: [FilmTMDB] = []
     
     let openAIService = OpenAIService.shared
     let tmdbService = TMDBService.shared
@@ -39,7 +39,7 @@ final class RequestViewModel {
         return (optionsTabName, pickedOption)
     }
     
-    func executeRequest(completion: @escaping (Result<Film, Error>) -> Void) {
+    func executeRequest(completion: @escaping (Result<FilmTMDB, Error>) -> Void) {
         var films: [String] = []
         
         for film in previouslyRecommendedFilms {
@@ -51,7 +51,7 @@ final class RequestViewModel {
         getFilmDetails(for: prompt) { result in
             switch result {
             case .success(let film):
-                self.filmsStore.addFilmToCoreData(id: film.id, request: self.requestCoreData)
+                self.filmsStore.addFilmToCoreData(filmTMDB: film, requestCoreData: self.requestCoreData)
                 completion(.success(film))
             case .failure(let error):
                 completion(.failure(error))
@@ -95,7 +95,7 @@ final class RequestViewModel {
         }
     }
     
-    private func getFilmDetails(for prompt: String, completion: @escaping (Result<Film, Error>) -> Void) {
+    private func getFilmDetails(for prompt: String, completion: @escaping (Result<FilmTMDB, Error>) -> Void) {
         getResponseFromOpenAI(with: prompt) { result in
             switch result {
             case .success(let array):
@@ -128,7 +128,7 @@ final class RequestViewModel {
             return
         }
         
-        var previouslyRecommendedFilms: [Film] = []
+        var previouslyRecommendedFilms: [FilmTMDB] = []
         let group = DispatchGroup()
         
         for filmCoreData in previouslyRecommendedFilmsCoreData {

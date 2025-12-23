@@ -1,10 +1,10 @@
 import Foundation
 
 struct TMDBResponseObject: Codable {
-    var results: [Film]?
+    var results: [FilmTMDB]?
 }
 
-struct Film: Codable {
+struct FilmTMDB: Codable {
     var id: Int32
     var originalTitle: String
     var overview: String?

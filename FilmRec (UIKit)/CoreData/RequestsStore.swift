@@ -1,4 +1,5 @@
 import CoreData
+import UIKit
 
 protocol RequestsStoreDelegate: AnyObject {
     func updateTableOrCollectionView()
@@ -15,7 +16,7 @@ final class RequestsStore: NSObject {
     lazy var fetchedRequestsResultController: NSFetchedResultsController<RequestCoreData> = {
         let fetchRequest = RequestCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \RequestCoreData.name, ascending: true)
+            NSSortDescriptor(keyPath: \RequestCoreData.dateExecuted, ascending: true)
         ]
         
         let fetchedRequestsResultController = NSFetchedResultsController(
@@ -30,14 +31,17 @@ final class RequestsStore: NSObject {
         return fetchedRequestsResultController
     }()
     
-    func addRequestToCoreData(name: String, genre: String, country: String, director: String, decade: String) {
-        let request = RequestCoreData(context: context)
-        request.id = UUID()
-        request.name = name
-        request.genre = genre
-        request.country = country
-        request.director = director
-        request.decade = decade
+    func addRequestToCoreData(request: Request) {
+        let requestCoreData = RequestCoreData(context: context)
+        requestCoreData.id = request.id
+        requestCoreData.name = request.name
+        requestCoreData.genre = request.genre
+        requestCoreData.country = request.country
+        requestCoreData.director = request.director
+        requestCoreData.decade = request.decade
+        requestCoreData.color = colorToData(request.color)
+        requestCoreData.dateCreated = request.dateCreated
+        requestCoreData.dateExecuted = request.dateExecuted
         
         do {
             try CoreDataStack.shared.saveContext()
@@ -55,6 +59,7 @@ final class RequestsStore: NSObject {
         if !films.isEmpty {
             for film in films {
                 film.removeFromRequests(requestCoreData)
+                //TODO: - Проверка на привязку к запросу или списку
             }
         }
         
@@ -67,6 +72,13 @@ final class RequestsStore: NSObject {
             assertionFailure("[RequestsStore] - removeRequestFromCoreData: Failed to remove request from Core Data.")
             return
         }
+    }
+    
+    private func colorToData(_ color: UIColor) -> Data? {
+        try? NSKeyedArchiver.archivedData(
+            withRootObject: color,
+            requiringSecureCoding: false
+        )
     }
 }
 
