@@ -30,10 +30,12 @@ final class FilmsStore: NSObject {
     
     private override init() { }
     
-    func addFilmToCoreData(filmTMDB: FilmTMDB, requestCoreData: RequestCoreData) {
+    func addFilmToCoreData(filmTMDB: FilmTMDB, requestCoreData: RequestCoreData) -> FilmCoreData? {
         if let existingFilm = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == filmTMDB.id }) {
             requestCoreData.addToFilms(existingFilm)
             existingFilm.addToRequests(requestCoreData)
+            
+            return existingFilm
         } else {
             let filmCoreData = FilmCoreData(context: context)
             
@@ -49,8 +51,10 @@ final class FilmsStore: NSObject {
             
             do {
                 try CoreDataStack.shared.saveContext()
+                return filmCoreData
             } catch {
                 assertionFailure("[FilmsStore] - addFilmToCoreData: Failed to add film to Core Data.")
+                return nil
             }
         }
     }
@@ -65,11 +69,26 @@ final class FilmsStore: NSObject {
         
         do {
             try CoreDataStack.shared.saveContext()
-            return
         } catch {
             assertionFailure("[FilmsStore] - removeFilmFromCoreData: Failed to remove film from Core Data.")
-            return
         }
+    }
+    
+    func toFilm(from filmCoreData: FilmCoreData) -> Film? {
+        guard let originalTitle = filmCoreData.originalTitle,
+              let dateRecommended = filmCoreData.dateRecommended else {
+            assertionFailure("[FilmsStore] - toFilm: Error getting film properties.")
+            return nil
+        }
+        
+        let film = Film(id: filmCoreData.id,
+                        originalTitle: originalTitle,
+                        overview: filmCoreData.overview ?? "",
+                        posterPath: filmCoreData.posterPath ?? "",
+                        voteAverage: filmCoreData.voteAverage,
+                        dateRecommended: dateRecommended)
+        
+        return film
     }
 }
 

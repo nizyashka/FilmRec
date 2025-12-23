@@ -4,11 +4,9 @@ final class RecommendedFilmViewModel {
     let filmsStore = FilmsStore.shared
     let watchlistStore = WatchlistStore.shared
     
-    let requestCoreData: RequestCoreData?
-    let film: FilmTMDB
+    let film: Film
     
-    init(requestCoreData: RequestCoreData? = nil, film: FilmTMDB) {
-        self.requestCoreData = requestCoreData
+    init(film: Film) {
         self.film = film
     }
     
@@ -28,7 +26,7 @@ final class RecommendedFilmViewModel {
             return
         }
         
-        watchlistStore.removeFilmFromWatchlist(watchlist: watchlistCoreData)
+        watchlistStore.removeFilmFromWatchlist(watchlistCoreData: watchlistCoreData)
     }
     
     func isInWatchlist() -> Bool {

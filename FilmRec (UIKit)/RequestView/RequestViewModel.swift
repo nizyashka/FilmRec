@@ -5,7 +5,7 @@ final class RequestViewModel {
     
     var request: Request
     var requestCoreData: RequestCoreData
-    private(set) var previouslyRecommendedFilms: [FilmTMDB] = []
+    private(set) var previouslyRecommendedFilms: [Film] = []
     
     let openAIService = OpenAIService.shared
     let tmdbService = TMDBService.shared
@@ -39,7 +39,7 @@ final class RequestViewModel {
         return (optionsTabName, pickedOption)
     }
     
-    func executeRequest(completion: @escaping (Result<FilmTMDB, Error>) -> Void) {
+    func executeRequest(completion: @escaping (Result<Film, Error>) -> Void) {
         var films: [String] = []
         
         for film in previouslyRecommendedFilms {
@@ -50,8 +50,14 @@ final class RequestViewModel {
         
         getFilmDetails(for: prompt) { result in
             switch result {
-            case .success(let film):
-                self.filmsStore.addFilmToCoreData(filmTMDB: film, requestCoreData: self.requestCoreData)
+            case .success(let filmTMDB):
+                guard let filmCoreData = self.filmsStore.addFilmToCoreData(filmTMDB: filmTMDB, requestCoreData: self.requestCoreData),
+                      let film = self.filmsStore.toFilm(from: filmCoreData) else {
+                    assertionFailure("[RequestViewModel] - executeRequest: Error saving a film to Core Data or converting it.")
+                    completion(.failure(CoreDataErrors.errorSaving))
+                    return
+                }
+                
                 completion(.success(film))
             case .failure(let error):
                 completion(.failure(error))
@@ -121,40 +127,23 @@ final class RequestViewModel {
         }
     }
     
-    func loadPreviouslyRecommendedFilms(completion: @escaping (() -> Void)) {
+    func loadPreviouslyRecommendedFilms() {
         guard let previouslyRecommendedFilmsCoreData = requestCoreData.films as? Set<FilmCoreData> else {
             assertionFailure("[RequestViewModel] - loadPreviouslyRecommendedFilms: Error getting previously recommended films for a request.")
-            completion()
             return
         }
         
-        var previouslyRecommendedFilms: [FilmTMDB] = []
-        let group = DispatchGroup()
+        var previouslyRecommendedFilms: [Film] = []
         
         for filmCoreData in previouslyRecommendedFilmsCoreData {
-            group.enter()
-            self.tmdbService.fetchFilmByID(filmCoreData.id) { result in
-                switch result {
-                case .success(let data):
-                    guard let responseObject = self.tmdbResponseObjectDecoder.decodeTMDBResponseForFilmByID(from: data) else {
-                        assertionFailure("[WatchlistViewModel] - loadFilmsFromWatchlist: Error decoding data.")
-                        completion()
-                        return
-                    }
-                    
-                    previouslyRecommendedFilms.append(responseObject)
-                case .failure(let error):
-                    assertionFailure("[WatchlistViewModel] - loadFilmsFromWatchlist: Error fetching a film from TMDB. Error - \(error.localizedDescription)")
-                    completion()
-                    return
-                }
-                group.leave()
+            guard let film = filmsStore.toFilm(from: filmCoreData) else {
+                assertionFailure("[RequestViewModel] - loadPreviouslyRecommendedFilms: Error getting or converting a film.")
+                return
             }
+            
+            previouslyRecommendedFilms.append(film)
         }
         
-        group.notify(queue: .main) {
-            self.previouslyRecommendedFilms = previouslyRecommendedFilms
-            completion()
-        }
+        self.previouslyRecommendedFilms = previouslyRecommendedFilms
     }
 }

@@ -8,3 +8,7 @@ enum NetworkingErrors: Error {
 enum DecodingErrors: Error {
     case decodingError
 }
+
+enum CoreDataErrors: Error {
+    case errorSaving
+}

@@ -4,10 +4,7 @@ final class MyRequestsViewModel {
     let requestsStore = RequestsStore.shared
     
     var requests: [Request] {
-        let requestsCoreData = fetchRequestsFromCoreData()
-        let requests = toRequest(from: requestsCoreData)
-        
-        return requests
+        toRequest(from: requestsCoreData)
     }
     
     var requestsCoreData: [RequestCoreData] {

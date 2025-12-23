@@ -65,13 +65,7 @@ final class RecommendedFilmViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
-        
-        guard let filmRatingString = viewModel.film.voteAverage else {
-            label.text = "???"
-            return label
-        }
-        
-        label.text = "\(filmRatingString)"
+        label.text = "\(String(format: "%.2f", viewModel.film.voteAverage))"
         
         return label
     }()

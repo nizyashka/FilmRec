@@ -13,7 +13,7 @@ final class WatchlistStore: NSObject {
     lazy var fetchedWatchlistResultController: NSFetchedResultsController<WatchlistCoreData> = {
         let fetchRequest = WatchlistCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \WatchlistCoreData.date, ascending: false)
+            NSSortDescriptor(keyPath: \WatchlistCoreData.dateWatchlisted, ascending: false)
         ]
         
         let fetchedWatchlistResultController = NSFetchedResultsController(
@@ -31,13 +31,13 @@ final class WatchlistStore: NSObject {
     private override init() { }
     
     func addFilmToWatchlist(film: FilmCoreData) {
-        let watchlist = WatchlistCoreData(context: context)
+        let watchlistCoreData = WatchlistCoreData(context: context)
         
-        watchlist.id = UUID()
-        watchlist.date = Date()
-        watchlist.film = film
+        watchlistCoreData.id = UUID()
+        watchlistCoreData.dateWatchlisted = Date()
+        watchlistCoreData.film = film
         
-        film.watchlist = watchlist
+        film.watchlist = watchlistCoreData
         
         do {
             try CoreDataStack.shared.saveContext()
@@ -48,11 +48,13 @@ final class WatchlistStore: NSObject {
         }
     }
     
-    func removeFilmFromWatchlist(watchlist: WatchlistCoreData) {
-        let film = watchlist.film
+    func removeFilmFromWatchlist(watchlistCoreData: WatchlistCoreData) {
+        let film = watchlistCoreData.film
         film?.watchlist = nil
         
-        context.delete(watchlist)
+        //TODO: - Проверка на привязку к запросу или списку
+        
+        context.delete(watchlistCoreData)
         
         do {
             try CoreDataStack.shared.saveContext()
