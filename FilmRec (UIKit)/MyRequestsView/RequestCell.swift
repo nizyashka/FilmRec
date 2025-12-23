@@ -9,6 +9,12 @@ final class RequestCell: UITableViewCell {
         return label
     }()
     
+    var color: UIColor? {
+        didSet {
+            contentView.backgroundColor = color
+        }
+    }
+    
     static let reuseIdentifier = "RequestCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -29,9 +35,6 @@ final class RequestCell: UITableViewCell {
     
     private func setupUI() {
         configureCell()
-        
-        contentView.addSubview(nameLabel)
-        
         setupConstraints()
     }
     
@@ -43,8 +46,8 @@ final class RequestCell: UITableViewCell {
     }
     
     private func configureCell() {
-        contentView.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.63)
         contentView.layer.cornerRadius = 15
         contentView.layer.masksToBounds = true
+        contentView.addSubview(nameLabel)
     }
 }

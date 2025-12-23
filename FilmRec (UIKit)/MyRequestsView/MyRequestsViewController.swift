@@ -17,7 +17,7 @@ class MyRequestsViewController: UIViewController {
     
     private let requestsStore = RequestsStore.shared
     
-    private let viewModel: MyRequestsViewModel?
+    private let viewModel: MyRequestsViewModel
     
     init(viewModel: MyRequestsViewModel) {
         self.viewModel = viewModel
@@ -74,7 +74,7 @@ class MyRequestsViewController: UIViewController {
 
 extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.requests.count ?? 0
+        return viewModel.requests.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -83,18 +83,16 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        requestCell.nameLabel.text = viewModel?.requests[indexPath.row].name
+        requestCell.nameLabel.text = viewModel.requests[indexPath.row].name
+        requestCell.color = viewModel.requests[indexPath.row].color
         requestCell.backgroundColor = .background
         
         return requestCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let request = viewModel?.requests[indexPath.row],
-              let requestCoreData = viewModel?.requestsCoreData[indexPath.row] else {
-            assertionFailure("[MyRequestsViewController] - tableView: No request with such indexPath found or no viewModel.")
-            return
-        }
+        let request = viewModel.requests[indexPath.row]
+        let requestCoreData = viewModel.requestsCoreData[indexPath.row]
         
         tableView.deselectRow(at: indexPath, animated: true)
         
