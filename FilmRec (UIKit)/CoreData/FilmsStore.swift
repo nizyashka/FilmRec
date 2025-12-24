@@ -32,10 +32,17 @@ final class FilmsStore: NSObject {
     
     func addFilmToCoreData(filmTMDB: FilmTMDB, requestCoreData: RequestCoreData) -> FilmCoreData? {
         if let existingFilm = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == filmTMDB.id }) {
+            requestCoreData.dateExecuted = Date()
             requestCoreData.addToFilms(existingFilm)
             existingFilm.addToRequests(requestCoreData)
             
-            return existingFilm
+            do {
+                try CoreDataStack.shared.saveContext()
+                return existingFilm
+            } catch {
+                assertionFailure("[FilmsStore] - addFilmToCoreData: Failed to save context.")
+                return nil
+            }
         } else {
             let filmCoreData = FilmCoreData(context: context)
             
@@ -46,6 +53,7 @@ final class FilmsStore: NSObject {
             filmCoreData.voteAverage = filmTMDB.voteAverage ?? 0.0
             filmCoreData.dateRecommended = Date()
             
+            requestCoreData.dateExecuted = Date()
             filmCoreData.addToRequests(requestCoreData)
             requestCoreData.addToFilms(filmCoreData)
             

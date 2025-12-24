@@ -71,18 +71,19 @@ class MyRequestsViewController: UIViewController {
             self?.changeTheme()
         })
         
-        let submenuActions = RequestFilters.allCases.map { filter in
+        let submenuActions = RequestSortingOptions.allCases.map { sortingOption in
             UIAction(
-                title: filter.rawValue,
-                state: filter == viewModel.selectedFilter ? .on : .off
+                title: sortingOption.rawValue,
+                state: sortingOption == viewModel.selectedSortingOption ? .on : .off
             ) { [weak self] _ in
-                self?.viewModel.selectedFilter = filter
+                self?.viewModel.selectedSortingOption = sortingOption
                 self?.configureNavBarItem()
+                self?.updateTableOrCollectionView()
             }
         }
         
         let submenuOptions: [UIMenuElement] = submenuActions
-        let submenu = UIMenu(title: "Sort By", subtitle: viewModel.selectedFilter.rawValue, image: UIImage(systemName: "arrow.up.arrow.down"), children: submenuOptions)
+        let submenu = UIMenu(title: "Sort By", subtitle: viewModel.selectedSortingOption.rawValue, image: UIImage(systemName: "arrow.up.arrow.down"), children: submenuOptions)
         
         let menuOptions: [UIMenuElement] = [themeAction, submenu]
         let menu = UIMenu(children: menuOptions)

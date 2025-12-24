@@ -4,11 +4,13 @@ final class MyRequestsViewModel {
     let requestsStore = RequestsStore.shared
     
     var requests: [Request] {
-        toRequest(from: requestsCoreData)
+        let requests = toRequest(from: requestsCoreData)
+        return sortRequests(requests)
     }
     
     var requestsCoreData: [RequestCoreData] {
-        fetchRequestsFromCoreData()
+        let requestCoreData = fetchRequestsFromCoreData()
+        return sortRequests(requestCoreData)
     }
     
     private func fetchRequestsFromCoreData() -> [RequestCoreData] {
@@ -20,7 +22,7 @@ final class MyRequestsViewModel {
         return requestsCoreData
     }
     
-    var selectedFilter: RequestFilters = .dateExecuted
+    var selectedSortingOption: RequestSortingOptions = .dateExecuted
     
     //TODO: - Вынести в request store
     private func toRequest(from requestsCoreData: [RequestCoreData]) -> [Request] {
@@ -59,5 +61,27 @@ final class MyRequestsViewModel {
     
     private func dataToColor(_ data: Data) -> UIColor? {
         try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data)
+    }
+    
+    private func sortRequests(_ requests: [RequestCoreData]) -> [RequestCoreData] {
+        switch selectedSortingOption {
+        case .dateExecuted:
+            return requests.sorted(by: { $0.dateExecuted ?? Date() > $1.dateExecuted ?? Date() })
+        case .dateCreated:
+            return requests.sorted(by: { $0.dateCreated ?? Date() > $1.dateCreated ?? Date() })
+        case .name:
+            return requests.sorted(by: { $0.name ?? "" < $1.name ?? "" })
+        }
+    }
+    
+    private func sortRequests(_ requests: [Request]) -> [Request] {
+        switch selectedSortingOption {
+        case .dateExecuted:
+            return requests.sorted(by: { $0.dateExecuted > $1.dateExecuted })
+        case .dateCreated:
+            return requests.sorted(by: { $0.dateCreated > $1.dateCreated })
+        case .name:
+            return requests.sorted(by: { $0.name < $1.name })
+        }
     }
 }
