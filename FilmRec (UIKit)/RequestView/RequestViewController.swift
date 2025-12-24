@@ -189,8 +189,13 @@ final class RequestViewController: UIViewController {
     }
     
     @objc private func deleteRequestButtonTapped() {
-        navigationController?.popViewController(animated: true)
-        viewModel.deleteRequest()
+        let alert = UIAlertController(title: "Delete this request?", message: "Once this request is deleted, it cannot be restored. Any recommended films that are not in the watchlist and are not associated with other requests will also be deleted.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            self.navigationController?.popViewController(animated: true)
+            self.viewModel.deleteRequest()
+        }))
+        self.present(alert, animated: true)
     }
     
     private func countHeightForCollectionView() -> CGFloat {
