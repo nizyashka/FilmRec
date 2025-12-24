@@ -11,4 +11,5 @@ enum DecodingErrors: Error {
 
 enum CoreDataErrors: Error {
     case errorSaving
+    case errorDeleting
 }

@@ -57,15 +57,15 @@ final class RequestCreationViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var saveWithoutExecutionButton: UIButton = {
+    private lazy var saveRequestButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Save Without Execution", for: .normal)
-        button.backgroundColor = .lightGray
+        button.setTitle("Save", for: .normal)
+        button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        button.addTarget(self, action: #selector(saveWithoutExecutionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveRequestButtonTapped), for: .touchUpInside)
         
         return button
     }()
@@ -111,7 +111,7 @@ final class RequestCreationViewController: UIViewController {
         scrollView.addSubview(requestNameTextField)
         scrollView.addSubview(optionsTabsLabel)
         scrollView.addSubview(optionsTabsTableView)
-        view.addSubview(saveWithoutExecutionButton)
+        view.addSubview(saveRequestButton)
     }
     
     private func setupConstraints() {
@@ -138,10 +138,10 @@ final class RequestCreationViewController: UIViewController {
             optionsTabsTableView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
             optionsTabsTableView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
             
-            saveWithoutExecutionButton.heightAnchor.constraint(equalToConstant: 95),
-            saveWithoutExecutionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            saveWithoutExecutionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            saveWithoutExecutionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            saveRequestButton.heightAnchor.constraint(equalToConstant: 45),
+            saveRequestButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            saveRequestButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            saveRequestButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     
@@ -149,12 +149,14 @@ final class RequestCreationViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func saveWithoutExecutionButtonTapped() {
+    @objc private func saveRequestButtonTapped() {
         if let requestName = requestNameTextField.text, !requestName.isEmpty {
             viewModel.saveWithoutExecution(requestName: requestName)
             dismiss(animated: true)
         } else {
-            //TODO: - Показать алерт
+            let alert = UIAlertController(title: "Request name is missing", message: "You have to give request a name.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
         }
     }
     
