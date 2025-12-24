@@ -144,6 +144,6 @@ final class RequestViewModel {
             previouslyRecommendedFilms.append(film)
         }
         
-        self.previouslyRecommendedFilms = previouslyRecommendedFilms
+        self.previouslyRecommendedFilms = previouslyRecommendedFilms.sorted(by: { $0.dateRecommended > $1.dateRecommended })
     }
 }
