@@ -91,8 +91,13 @@ class MyRequestsViewController: UIViewController {
     }
     
     private func changeTheme() {
-        //TODO: Добавить смену темы
-        print("Change theme")
+        let appTheme = UserDefaults.standard.bool(forKey: "appTheme")
+        UserDefaults.standard.set(!appTheme, forKey: "appTheme")
+        
+        NotificationCenter.default.post(
+            name: .themeDidChange,
+            object: nil
+        )
     }
 }
 

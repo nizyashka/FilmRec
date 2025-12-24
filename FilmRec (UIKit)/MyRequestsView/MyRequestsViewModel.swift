@@ -22,7 +22,6 @@ final class MyRequestsViewModel {
     
     var selectedFilter: RequestFilters = .dateExecuted
     
-    
     //TODO: - Вынести в request store
     private func toRequest(from requestsCoreData: [RequestCoreData]) -> [Request] {
         var requests: [Request] = []
