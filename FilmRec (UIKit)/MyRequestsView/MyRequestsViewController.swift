@@ -62,13 +62,37 @@ class MyRequestsViewController: UIViewController {
     }
     
     private func configureNavBarItem() {
-        let barButton = UIBarButtonItem(
-            image: UIImage(systemName: "ellipsis.circle"),
-            style: .plain,
-            target: self,
-            action: nil)
-        
+        let barButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: makeBarButtonMenu())
         navigationItem.rightBarButtonItem = barButton
+    }
+    
+    private func makeBarButtonMenu() -> UIMenu {
+        let themeAction = UIAction(title: "Change Theme", image: UIImage(systemName: "paintbrush"), handler: { [weak self] _ in
+            self?.changeTheme()
+        })
+        
+        let submenuActions = RequestFilters.allCases.map { filter in
+            UIAction(
+                title: filter.rawValue,
+                state: filter == viewModel.selectedFilter ? .on : .off
+            ) { [weak self] _ in
+                self?.viewModel.selectedFilter = filter
+                self?.configureNavBarItem()
+            }
+        }
+        
+        let submenuOptions: [UIMenuElement] = submenuActions
+        let submenu = UIMenu(title: "Sort By", subtitle: viewModel.selectedFilter.rawValue, image: UIImage(systemName: "arrow.up.arrow.down"), children: submenuOptions)
+        
+        let menuOptions: [UIMenuElement] = [themeAction, submenu]
+        let menu = UIMenu(children: menuOptions)
+        
+        return menu
+    }
+    
+    private func changeTheme() {
+        //TODO: Добавить смену темы
+        print("Change theme")
     }
 }
 
