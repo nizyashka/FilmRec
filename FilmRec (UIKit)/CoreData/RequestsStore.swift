@@ -59,7 +59,14 @@ final class RequestsStore: NSObject {
         if !films.isEmpty {
             for film in films {
                 film.removeFromRequests(requestCoreData)
-                //TODO: - Проверка на привязку к запросу или списку
+                
+                let filmRequests = film.requests as? Set<RequestCoreData>
+                
+                if (filmRequests == nil || filmRequests?.isEmpty == true),
+                   film.watchlist == nil {
+                    print(film.originalTitle)
+                    context.delete(film)
+                }
             }
         }
         

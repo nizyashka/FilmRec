@@ -49,10 +49,19 @@ final class WatchlistStore: NSObject {
     }
     
     func removeFilmFromWatchlist(watchlistCoreData: WatchlistCoreData) {
-        let film = watchlistCoreData.film
-        film?.watchlist = nil
+        guard let film = watchlistCoreData.film else {
+            assertionFailure("[WatchlistStore] - removeFilmFromWatchlist: Failed to get film from watchlist entry in Core Data.")
+            return
+        }
         
-        //TODO: - Проверка на привязку к запросу или списку
+        film.watchlist = nil
+        
+        let filmRequests = film.requests as? Set<RequestCoreData>
+        
+        if filmRequests == nil || filmRequests?.isEmpty == true {
+            print(film.originalTitle)
+            context.delete(film)
+        }
         
         context.delete(watchlistCoreData)
         
