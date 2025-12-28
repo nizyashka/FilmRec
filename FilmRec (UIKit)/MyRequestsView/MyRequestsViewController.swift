@@ -71,7 +71,7 @@ class MyRequestsViewController: UIViewController {
             self?.changeTheme()
         })
         
-        let submenuActions = RequestSortingOptions.allCases.map { sortingOption in
+        let submenuActions = RequestsSortingOptions.allCases.map { sortingOption in
             UIAction(
                 title: sortingOption.rawValue,
                 state: sortingOption == viewModel.selectedSortingOption ? .on : .off

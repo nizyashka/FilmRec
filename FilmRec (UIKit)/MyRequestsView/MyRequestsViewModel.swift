@@ -22,7 +22,19 @@ final class MyRequestsViewModel {
         return requestsCoreData
     }
     
-    var selectedSortingOption: RequestSortingOptions = .dateExecuted
+    var selectedSortingOption: RequestsSortingOptions {
+        get {
+            guard let rawValue = UserDefaults.standard.string(forKey: "requestsSortingOption"),
+                  let option = RequestsSortingOptions(rawValue: rawValue) else {
+                return .dateExecuted
+            }
+            return option
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: "requestsSortingOption")
+        }
+    }
     
     //TODO: - Вынести в request store
     private func toRequest(from requestsCoreData: [RequestCoreData]) -> [Request] {

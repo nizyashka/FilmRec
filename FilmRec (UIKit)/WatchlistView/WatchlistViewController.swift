@@ -38,6 +38,8 @@ final class WatchlistViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
         title = "Watchlist"
         
+        configureNavBarItem()
+        
         view.addSubview(filmsInWatchlistCollectionView)
     }
     
@@ -58,6 +60,46 @@ final class WatchlistViewController: UIViewController {
     
     private func setupBindings() {
         viewModel.controllerDidChangeContent = updateCollectionView
+    }
+    
+    private func configureNavBarItem() {
+        let barButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), menu: makeBarButtonMenu())
+        navigationItem.rightBarButtonItem = barButton
+    }
+    
+    private func makeBarButtonMenu() -> UIMenu {
+        let themeAction = UIAction(title: "Change Theme", image: UIImage(systemName: "paintbrush"), handler: { [weak self] _ in
+            self?.changeTheme()
+        })
+        
+        let submenuActions = WatchlistSortingOptions.allCases.map { sortingOption in
+            UIAction(
+                title: sortingOption.rawValue,
+                state: sortingOption == viewModel.selectedSortingOption ? .on : .off
+            ) { [weak self] _ in
+                self?.viewModel.selectedSortingOption = sortingOption
+                self?.configureNavBarItem()
+                self?.updateCollectionView()
+            }
+        }
+        
+        let submenuOptions: [UIMenuElement] = submenuActions
+        let submenu = UIMenu(title: "Sort By", subtitle: viewModel.selectedSortingOption.rawValue, image: UIImage(systemName: "arrow.up.arrow.down"), children: submenuOptions)
+        
+        let menuOptions: [UIMenuElement] = [themeAction, submenu]
+        let menu = UIMenu(children: menuOptions)
+        
+        return menu
+    }
+    
+    private func changeTheme() {
+        let appTheme = UserDefaults.standard.bool(forKey: "appTheme")
+        UserDefaults.standard.set(!appTheme, forKey: "appTheme")
+        
+        NotificationCenter.default.post(
+            name: .themeDidChange,
+            object: nil
+        )
     }
 }
 
