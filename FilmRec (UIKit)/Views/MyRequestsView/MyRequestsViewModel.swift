@@ -67,7 +67,7 @@ final class MyRequestsViewModel {
                 country: country,
                 director: director,
                 decade: decade,
-                color: dataToColor(color)?.withAlphaComponent(0.63) ?? UIColor.systemOrange.withAlphaComponent(0.63),
+                color: color.toColor()?.withAlphaComponent(0.63) ?? UIColor.systemOrange.withAlphaComponent(0.63),
                 dateCreated: dateCreated,
                 dateExecuted: dateExecuted)
             
@@ -75,10 +75,6 @@ final class MyRequestsViewModel {
         }
         
         return requests
-    }
-    
-    private func dataToColor(_ data: Data) -> UIColor? {
-        try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data)
     }
     
     private func sortRequests(_ requests: [RequestCoreData]) -> [RequestCoreData] {

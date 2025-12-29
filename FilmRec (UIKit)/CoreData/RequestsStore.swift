@@ -39,7 +39,7 @@ final class RequestsStore: NSObject {
         requestCoreData.country = request.country
         requestCoreData.director = request.director
         requestCoreData.decade = request.decade
-        requestCoreData.color = colorToData(request.color)
+        requestCoreData.color = request.color.toData()
         requestCoreData.dateCreated = request.dateCreated
         requestCoreData.dateExecuted = request.dateExecuted
         
@@ -78,13 +78,6 @@ final class RequestsStore: NSObject {
             assertionFailure("[RequestsStore] - removeRequestFromCoreData: Failed to remove request from Core Data.")
             return
         }
-    }
-    
-    private func colorToData(_ color: UIColor) -> Data? {
-        try? NSKeyedArchiver.archivedData(
-            withRootObject: color,
-            requiringSecureCoding: false
-        )
     }
 }
 
