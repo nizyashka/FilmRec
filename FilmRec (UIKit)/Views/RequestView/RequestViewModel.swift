@@ -75,6 +75,7 @@ final class RequestViewModel {
             switch result {
             case .success(let data):
                 guard let decodedResponseText = self?.openAIResponseObjectDecoder.decodeOpenAIResponse(from: data) else {
+                    completion(.failure(DecodingErrors.decodingError))
                     return
                 }
                 

@@ -183,6 +183,7 @@ final class RequestViewController: UIViewController {
                     self?.present(navigationController, animated: true)
                 }
             case .failure(let error):
+                //TODO: Добавить алерт ошибки загрузки фильма
                 assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
             }
         }
