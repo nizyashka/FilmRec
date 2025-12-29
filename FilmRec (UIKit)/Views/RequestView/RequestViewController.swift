@@ -167,20 +167,20 @@ final class RequestViewController: UIViewController {
     }
     
     @objc private func executeRequestButtonTapped() {
-        viewModel.executeRequest { result in
+        viewModel.executeRequest { [weak self] result in
             switch result {
             case .success(let film):
-                self.viewModel.loadPreviouslyRecommendedFilms()
+                self?.viewModel.loadPreviouslyRecommendedFilms()
                 DispatchQueue.main.async {
-                    self.previouslyRecommendedFilmsCollectionView.reloadData()
-                    self.previouslyRecommendedFilmsCollectionView.layoutIfNeeded()
-                    self.previouslyRecommendedFilmsCollectionViewHeightConstraint.constant = self.previouslyRecommendedFilmsCollectionView.collectionViewLayout.collectionViewContentSize.height
+                    self?.previouslyRecommendedFilmsCollectionView.reloadData()
+                    self?.previouslyRecommendedFilmsCollectionView.layoutIfNeeded()
+                    self?.previouslyRecommendedFilmsCollectionViewHeightConstraint.constant = self?.previouslyRecommendedFilmsCollectionView.collectionViewLayout.collectionViewContentSize.height ?? 0
                     
                     let recommendedFilmViewModel = RecommendedFilmViewModel(film: film)
                     let recommendedFilmViewController = RecommendedFilmViewController(viewModel: recommendedFilmViewModel)
                     let navigationController = UINavigationController(rootViewController: recommendedFilmViewController)
                     navigationController.modalPresentationStyle = .pageSheet
-                    self.present(navigationController, animated: true)
+                    self?.present(navigationController, animated: true)
                 }
             case .failure(let error):
                 assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
@@ -191,9 +191,9 @@ final class RequestViewController: UIViewController {
     @objc private func deleteRequestButtonTapped() {
         let alert = UIAlertController(title: "Delete this request?", message: "Once this request is deleted, it cannot be restored. Any recommended films that are not in the watchlist and are not associated with other requests will also be deleted.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
-            self.navigationController?.popViewController(animated: true)
-            self.viewModel.deleteRequest()
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+            self?.viewModel.deleteRequest()
         }))
         self.present(alert, animated: true)
     }

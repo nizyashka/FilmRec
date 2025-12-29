@@ -48,11 +48,11 @@ final class RequestViewModel {
         
         let prompt = PromptCreation.shared.createPrompt(for: request, exclude: films)
         
-        getFilmDetails(for: prompt) { result in
+        getFilmDetails(for: prompt) { [weak self] result in
             switch result {
             case .success(let filmTMDB):
-                guard let filmCoreData = self.filmsStore.addFilmToCoreData(filmTMDB: filmTMDB, requestCoreData: self.requestCoreData),
-                      let film = self.filmsStore.toFilm(from: filmCoreData) else {
+                guard let filmCoreData = self?.filmsStore.addFilmToCoreData(filmTMDB: filmTMDB, requestCoreData: self?.requestCoreData),
+                      let film = self?.filmsStore.toFilm(from: filmCoreData) else {
                     assertionFailure("[RequestViewModel] - executeRequest: Error saving a film to Core Data or converting it.")
                     completion(.failure(CoreDataErrors.errorSaving))
                     return
@@ -71,10 +71,10 @@ final class RequestViewModel {
     }
     
     private func getResponseFromOpenAI(with prompt: String, completion: @escaping (Result<Array<String>, Error>) -> Void) {
-        openAIService.fetchOpenAIResponse(with: prompt) { result in
+        openAIService.fetchOpenAIResponse(with: prompt) { [weak self] result in
             switch result {
             case .success(let data):
-                guard let decodedResponseText = self.openAIResponseObjectDecoder.decodeOpenAIResponse(from: data) else {
+                guard let decodedResponseText = self?.openAIResponseObjectDecoder.decodeOpenAIResponse(from: data) else {
                     return
                 }
                 
@@ -87,10 +87,10 @@ final class RequestViewModel {
     }
     
     private func getFilmFromTMDB(titled film: String, shotIn year: String, completion: @escaping (Result<TMDBResponseObject, Error>) -> Void) {
-        tmdbService.fetchTMDBResponse(for: film, shotIn: year) { result in
+        tmdbService.fetchTMDBResponse(for: film, shotIn: year) { [weak self] result in
             switch result {
             case .success(let data):
-                guard let decodedResponse = self.tmdbResponseObjectDecoder.decodeTMDBResponse(from: data) else {
+                guard let decodedResponse = self?.tmdbResponseObjectDecoder.decodeTMDBResponse(from: data) else {
                     return
                 }
                 
@@ -102,12 +102,12 @@ final class RequestViewModel {
     }
     
     private func getFilmDetails(for prompt: String, completion: @escaping (Result<FilmTMDB, Error>) -> Void) {
-        getResponseFromOpenAI(with: prompt) { result in
+        getResponseFromOpenAI(with: prompt) { [weak self] result in
             switch result {
             case .success(let array):
                 let title = array[0]
                 let year = array[1]
-                self.getFilmFromTMDB(titled: title, shotIn: year) { result in
+                self?.getFilmFromTMDB(titled: title, shotIn: year) { result in
                     switch result {
                     case .success(let decodedResponse):
                         guard let films = decodedResponse.results else {

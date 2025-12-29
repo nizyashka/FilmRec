@@ -64,7 +64,6 @@ final class RequestsStore: NSObject {
                 
                 if (filmRequests == nil || filmRequests?.isEmpty == true),
                    film.watchlist == nil {
-                    print(film.originalTitle)
                     context.delete(film)
                 }
             }

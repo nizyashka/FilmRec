@@ -59,7 +59,6 @@ final class WatchlistStore: NSObject {
         let filmRequests = film.requests as? Set<RequestCoreData>
         
         if filmRequests == nil || filmRequests?.isEmpty == true {
-            print(film.originalTitle)
             context.delete(film)
         }
         

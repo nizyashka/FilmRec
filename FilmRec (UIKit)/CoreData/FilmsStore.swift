@@ -30,7 +30,12 @@ final class FilmsStore: NSObject {
     
     private override init() { }
     
-    func addFilmToCoreData(filmTMDB: FilmTMDB, requestCoreData: RequestCoreData) -> FilmCoreData? {
+    func addFilmToCoreData(filmTMDB: FilmTMDB, requestCoreData: RequestCoreData?) -> FilmCoreData? {
+        guard let requestCoreData else {
+            assertionFailure("[FilmsStore] - addFilmToCoreData: RequestCoreData is nil.")
+            return nil
+        }
+        
         if let existingFilm = fetchedFilmsResultController.fetchedObjects?.first(where: { $0.id == filmTMDB.id }) {
             requestCoreData.dateExecuted = Date()
             requestCoreData.addToFilms(existingFilm)
