@@ -42,9 +42,6 @@ final class MyRequestsViewModel {
         }
     }
     
-    //TODO: - Вынести в request store
-    
-    
     private func sortRequests(_ requests: [RequestCoreData]) -> [RequestCoreData] {
         switch selectedSortingOption {
         case .dateExecuted:

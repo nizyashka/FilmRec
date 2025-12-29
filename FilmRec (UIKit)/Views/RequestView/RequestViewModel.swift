@@ -115,8 +115,11 @@ final class RequestViewModel {
                             return
                         }
                         
-                        //TODO: Добавить если не пустой
-                        completion(.success(films[0]))
+                        if !films.isEmpty {
+                            completion(.success(films[0]))
+                        } else {
+                            completion(.failure(NetworkingErrors.noData))
+                        }
                     case .failure(let error):
                         completion(.failure(error))
                     }
