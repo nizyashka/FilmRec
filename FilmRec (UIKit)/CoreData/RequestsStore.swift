@@ -79,6 +79,40 @@ final class RequestsStore: NSObject {
             return
         }
     }
+    
+    func toRequest(from requestsCoreData: [RequestCoreData]) -> [Request] {
+        var requests: [Request] = []
+        
+        for requestCoreData in requestsCoreData {
+            guard let id = requestCoreData.id,
+                  let name = requestCoreData.name,
+                  let genre = requestCoreData.genre,
+                  let country = requestCoreData.country,
+                  let director = requestCoreData.director,
+                  let decade = requestCoreData.decade,
+                  let color = requestCoreData.color,
+                  let dateCreated = requestCoreData.dateCreated,
+                  let dateExecuted = requestCoreData.dateExecuted else {
+                assertionFailure("[RequestsStore] - requestCoreDataToRequest: Error getting properties from RequestCoreData.")
+                return requests
+            }
+            
+            let request = Request(
+                id: id,
+                name: name,
+                genre: genre,
+                country: country,
+                director: director,
+                decade: decade,
+                color: color.toColor()?.withAlphaComponent(0.63) ?? UIColor.systemOrange.withAlphaComponent(0.63),
+                dateCreated: dateCreated,
+                dateExecuted: dateExecuted)
+            
+            requests.append(request)
+        }
+        
+        return requests
+    }
 }
 
 extension RequestsStore: NSFetchedResultsControllerDelegate {
