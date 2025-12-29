@@ -53,8 +53,8 @@ final class WatchlistViewController: UIViewController {
     }
     
     private func updateCollectionView() {
-        DispatchQueue.main.async {
-            self.filmsInWatchlistCollectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.filmsInWatchlistCollectionView.reloadData()
         }
     }
     
