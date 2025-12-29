@@ -35,6 +35,7 @@ final class WatchlistViewController: UIViewController {
     
     private func setupUI() {
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.largeTitleDisplayMode = .always
         title = "Watchlist"
         

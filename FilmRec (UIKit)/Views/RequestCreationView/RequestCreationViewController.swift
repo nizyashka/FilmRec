@@ -34,7 +34,8 @@ final class RequestCreationViewController: UIViewController {
         let textField = PaddedTextField()
         textField.delegate = self
         textField.placeholder = "New request"
-        textField.backgroundColor = .white
+        textField.backgroundColor = .uiElementsAccent
+        textField.tintColor = .systemBlue
         textField.layer.cornerRadius = 10
         textField.layer.masksToBounds = true
         textField.returnKeyType = UIReturnKeyType.done
@@ -91,7 +92,7 @@ final class RequestCreationViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .background
+        view.backgroundColor = .secondaryBackground
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.largeTitleDisplayMode = .never

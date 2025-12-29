@@ -3,6 +3,7 @@ import UIKit
 final class OptionCell: UITableViewCell {
     lazy var optionNameLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .text
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -10,7 +11,7 @@ final class OptionCell: UITableViewCell {
     
     lazy var checkmarkImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "checkmark")
+        imageView.image = UIImage(systemName: "checkmark")?.withTintColor(.systemBlue, renderingMode: .alwaysOriginal)
         imageView.isHidden = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -31,6 +32,8 @@ final class OptionCell: UITableViewCell {
     }
     
     private func setupUI() {
+        contentView.backgroundColor = .uiElementsAccent
+        
         contentView.addSubview(optionNameLabel)
         contentView.addSubview(checkmarkImageView)
     }

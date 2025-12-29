@@ -39,7 +39,7 @@ final class RequestViewController: UIViewController {
         let label = UILabel()
         label.text = "Previously recommended"
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        label.textColor = .black
+        label.textColor = .text
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -51,7 +51,7 @@ final class RequestViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(FilmCardCell.self, forCellWithReuseIdentifier: FilmCardCell.reuseIdentifier)
-        collectionView.backgroundColor = .background
+        collectionView.backgroundColor = .secondaryBackground
         collectionView.isScrollEnabled = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -117,7 +117,7 @@ final class RequestViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .background
+        view.backgroundColor = .secondaryBackground
         navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.largeTitleDisplayMode = .never
         title = viewModel.request.name

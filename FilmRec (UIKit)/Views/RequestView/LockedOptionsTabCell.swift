@@ -3,6 +3,7 @@ import UIKit
 final class LockedOptionsTabCell: UITableViewCell {
     lazy var optionsTabNameLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .text
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -30,6 +31,8 @@ final class LockedOptionsTabCell: UITableViewCell {
     }
     
     private func setupUI() {
+        contentView.backgroundColor = .uiElementsAccent
+        
         contentView.addSubview(optionsTabNameLabel)
         contentView.addSubview(pickedOptionLabel)
     }

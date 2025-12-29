@@ -3,6 +3,7 @@ import UIKit
 final class OptionsTabCell: UITableViewCell {
     lazy var optionsTabNameLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .text
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -39,6 +40,8 @@ final class OptionsTabCell: UITableViewCell {
     }
     
     private func setupUI() {
+        contentView.backgroundColor = .uiElementsAccent
+        
         contentView.addSubview(optionsTabNameLabel)
         contentView.addSubview(pickedOptionLabel)
         contentView.addSubview(chevronImageView)

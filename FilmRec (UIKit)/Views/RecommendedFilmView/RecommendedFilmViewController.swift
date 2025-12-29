@@ -41,10 +41,11 @@ final class RecommendedFilmViewController: UIViewController {
         }
         
         let imageView = UIImageView()
-        let processor = RoundCornerImageProcessor(cornerRadius: 30)
+        imageView.backgroundColor = .secondaryBackground
+        imageView.layer.cornerRadius = 4
+        imageView.layer.masksToBounds = true
         imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: imageURL,
-                              options: [.processor(processor)])
+        imageView.kf.setImage(with: imageURL)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -116,7 +117,7 @@ final class RecommendedFilmViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .background
+        view.backgroundColor = .secondaryBackground
         
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.rightBarButtonItem = rightBarButton
