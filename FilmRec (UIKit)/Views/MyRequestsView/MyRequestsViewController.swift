@@ -15,8 +15,6 @@ class MyRequestsViewController: UIViewController {
         return tableView
     }()
     
-    private let requestsStore = RequestsStore.shared
-    
     private let viewModel: MyRequestsViewModel
     
     init(viewModel: MyRequestsViewModel) {
@@ -31,9 +29,8 @@ class MyRequestsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        requestsStore.requestsStoreDelegate = self
-        
         setupUI()
+        setupBindings()
     }
     
     private func setupUI() {
@@ -52,6 +49,10 @@ class MyRequestsViewController: UIViewController {
             requestsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             requestsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+    
+    private func setupBindings() {
+        viewModel.controllerDidChangeContent = updateTableView
     }
     
     private func configureNavigationTitle() {
@@ -78,7 +79,7 @@ class MyRequestsViewController: UIViewController {
             ) { [weak self] _ in
                 self?.viewModel.selectedSortingOption = sortingOption
                 self?.configureNavBarItem()
-                self?.updateTableOrCollectionView()
+                self?.updateTableView()
             }
         }
         
@@ -99,6 +100,10 @@ class MyRequestsViewController: UIViewController {
             name: .themeDidChange,
             object: nil
         )
+    }
+    
+    private func updateTableView() {
+        requestsTableView.reloadData()
     }
 }
 
@@ -136,11 +141,5 @@ extension MyRequestsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 95
-    }
-}
-
-extension MyRequestsViewController: RequestsStoreDelegate {
-    func updateTableOrCollectionView() {
-        requestsTableView.reloadData()
     }
 }

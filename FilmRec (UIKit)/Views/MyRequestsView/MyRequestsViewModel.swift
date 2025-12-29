@@ -13,6 +13,12 @@ final class MyRequestsViewModel {
         return sortRequests(requestCoreData)
     }
     
+    var controllerDidChangeContent: (() -> Void)?
+    
+    init() {
+        requestsStore.requestsStoreDelegate = self
+    }
+    
     private func fetchRequestsFromCoreData() -> [RequestCoreData] {
         guard let requestsCoreData = requestsStore.fetchedRequestsResultController.fetchedObjects else {
             assertionFailure("[RequestsModel] - fetchRequestsFromCoreData: Error getting fetched objects from Requests Store.")
@@ -95,5 +101,11 @@ final class MyRequestsViewModel {
         case .name:
             return requests.sorted(by: { $0.name < $1.name })
         }
+    }
+}
+
+extension MyRequestsViewModel: RequestsStoreDelegate {
+    func updateTableOrCollectionView() {
+        controllerDidChangeContent?()
     }
 }
