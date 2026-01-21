@@ -183,8 +183,16 @@ final class RequestViewController: UIViewController {
                     self?.present(navigationController, animated: true)
                 }
             case .failure(let error):
-                //TODO: Добавить алерт ошибки загрузки фильма
-                assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Error", message: "An error occurred while recommending the film. Please try enabling a VPN.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Close", style: .cancel))
+                    alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: { _ in
+                        self?.executeRequestButtonTapped()
+                    }))
+                    self?.present(alert, animated: true)
+                }
+                
+//                assertionFailure("[RequestViewController] - executeRequestButtonTapped: Error getting a film while executing request (\(error))")
             }
         }
     }

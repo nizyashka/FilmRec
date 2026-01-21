@@ -61,7 +61,7 @@ final class RequestViewModel {
                 completion(.success(film))
             case .failure(let error):
                 completion(.failure(error))
-                assertionFailure("[RequestViewModel] - executeRequest: Error getting a film while executing request (\(error))")
+//                assertionFailure("[RequestViewModel] - executeRequest: Error getting a film while executing request (\(error))")
             }
         }
     }
