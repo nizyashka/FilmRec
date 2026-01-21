@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 final class RequestViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
@@ -167,11 +168,15 @@ final class RequestViewController: UIViewController {
     }
     
     @objc private func executeRequestButtonTapped() {
+        ProgressHUD.animate()
+        
         viewModel.executeRequest { [weak self] result in
             switch result {
             case .success(let film):
                 self?.viewModel.loadPreviouslyRecommendedFilms()
                 DispatchQueue.main.async {
+                    ProgressHUD.succeed()
+                    
                     self?.previouslyRecommendedFilmsCollectionView.reloadData()
                     self?.previouslyRecommendedFilmsCollectionView.layoutIfNeeded()
                     self?.previouslyRecommendedFilmsCollectionViewHeightConstraint.constant = self?.previouslyRecommendedFilmsCollectionView.collectionViewLayout.collectionViewContentSize.height ?? 0
@@ -184,6 +189,8 @@ final class RequestViewController: UIViewController {
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
+                    ProgressHUD.failed()
+                    
                     let alert = UIAlertController(title: "Error", message: "An error occurred while recommending the film. Please try enabling a VPN.", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "Close", style: .cancel))
                     alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: { _ in
