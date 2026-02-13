@@ -1,10 +1,3 @@
-//
-//  OpenAIResponseObjectDecoder.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 19.04.2025.
-//
-
 import Foundation
 
 final class OpenAIResponseObjectDecoder {
@@ -22,6 +15,7 @@ final class OpenAIResponseObjectDecoder {
                 print("[OpenAIResponseObjectDecoder] - decodeOpenAIResponse: Something is wrong with response.")
                 return nil
             }
+            
             return responseText
         } catch {
             print("[OpenAIResponseObjectDecoder] - decodeOpenAIResponse: Error decoding Open AI response object.")

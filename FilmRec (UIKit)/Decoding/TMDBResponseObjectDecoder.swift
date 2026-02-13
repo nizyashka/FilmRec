@@ -1,10 +1,3 @@
-//
-//  TMDBResponseObjectDecoder.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 17.05.2025.
-//
-
 import Foundation
 
 final class TMDBResponseObjectDecoder {
@@ -23,10 +16,10 @@ final class TMDBResponseObjectDecoder {
         }
     }
     
-    func decodeTMDBResponseForFilmByID(from data: Data) -> Film? {
+    func decodeTMDBResponseForFilmByID(from data: Data) -> FilmTMDB? {
         do {
             let decoder = JSONDecoder()
-            let decodedResponse = try decoder.decode(Film.self, from: data)
+            let decodedResponse = try decoder.decode(FilmTMDB.self, from: data)
             return decodedResponse
         } catch {
             print("[OpenAIResponseObjectDecoder] - decodeTMDBResponseForFilmByID: Error decoding a film from TMDB.")

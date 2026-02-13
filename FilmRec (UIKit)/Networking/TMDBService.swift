@@ -1,10 +1,3 @@
-//
-//  TMDBService.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 17.05.2025.
-//
-
 import Foundation
 
 final class TMDBService {
@@ -109,7 +102,6 @@ final class TMDBService {
                 completion(.failure(NetworkingErrors.noResponse))
                 return
             }
-            print(response.statusCode)
             
             guard let data = data else {
                 print("[TMDBService] - fetchFilmByID: Received no data")

@@ -1,0 +1,180 @@
+import UIKit
+import Kingfisher
+
+final class RecommendedFilmViewController: UIViewController {
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return scrollView
+    }()
+    
+    private lazy var leftBarButton: UIBarButtonItem = {
+        let leftBarButton = UIBarButtonItem(title: "Close",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(leftBarButtonTapped))
+        
+        leftBarButton.tintColor = .systemBlue
+        
+        return leftBarButton
+    }()
+    
+    private lazy var rightBarButton: UIBarButtonItem = {
+        let systemName = viewModel.isInWatchlist() ? "clock.badge.xmark" : "clock.badge.checkmark"
+        
+        let rightBarButton = UIBarButtonItem(image: UIImage(systemName: systemName)!,
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(rightBarButtonTapped))
+        
+        rightBarButton.tintColor = viewModel.isInWatchlist() ? .systemRed : .systemGreen
+        
+        return rightBarButton
+    }()
+    
+    private lazy var filmPosterImageView: UIImageView = {
+        guard let posterURL = viewModel.film.posterPath,
+              let imageURL = URL(string: "https://image.tmdb.org/t/p/original" + posterURL) else {
+            assertionFailure("[RecommendedFilmView] - filmPosterImageView: Error getting a URL of poster.")
+            return UIImageView()
+        }
+        
+        let imageView = UIImageView()
+        imageView.backgroundColor = .secondaryBackground
+        imageView.layer.cornerRadius = 4
+        imageView.layer.masksToBounds = true
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: imageURL)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
+    private lazy var filmTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = viewModel.film.originalTitle
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    private lazy var filmRatingLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "\(String(format: "%.1f", viewModel.film.voteAverage))"
+        
+        return label
+    }()
+    
+    private lazy var filmRatingImageView: UIImageView = {
+        let imageView = UIImageView()
+        let ratingImage = UIImage(systemName: "star.fill")
+        imageView.image = ratingImage?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return imageView
+    }()
+    
+    private lazy var filmOverviewLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.numberOfLines = 0
+        label.textAlignment = .justified
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        guard let overview = viewModel.film.overview else {
+            label.text = "\tThis film has no overview."
+            return label
+        }
+        
+        label.text = "\t\(overview)"
+        
+        return label
+    }()
+    
+    private let viewModel: RecommendedFilmViewModel
+    
+    init(viewModel: RecommendedFilmViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupUI()
+        setupConstraints()
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .secondaryBackground
+        
+        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.rightBarButtonItem = rightBarButton
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(filmPosterImageView)
+        scrollView.addSubview(filmTitleLabel)
+        scrollView.addSubview(filmRatingLabel)
+        scrollView.addSubview(filmRatingImageView)
+        scrollView.addSubview(filmOverviewLabel)
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            filmPosterImageView.heightAnchor.constraint(equalToConstant: 360),
+            filmPosterImageView.widthAnchor.constraint(equalToConstant: 240),
+            filmPosterImageView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 32),
+            filmPosterImageView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            
+            filmTitleLabel.topAnchor.constraint(equalTo: filmPosterImageView.bottomAnchor, constant: 16),
+            filmTitleLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            filmTitleLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
+            filmTitleLabel.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            
+            filmRatingLabel.topAnchor.constraint(equalTo: filmTitleLabel.bottomAnchor, constant: 8),
+            filmRatingLabel.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            
+            filmRatingImageView.leadingAnchor.constraint(equalTo: filmRatingLabel.trailingAnchor, constant: 8),
+            filmRatingImageView.centerYAnchor.constraint(equalTo: filmRatingLabel.centerYAnchor),
+            
+            filmOverviewLabel.topAnchor.constraint(equalTo: filmRatingLabel.bottomAnchor, constant: 16),
+            filmOverviewLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            filmOverviewLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
+        ])
+    }
+    
+    @objc private func leftBarButtonTapped() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func rightBarButtonTapped() {
+        if viewModel.isInWatchlist() {
+            viewModel.removeFromWatchlist()
+        } else {
+            viewModel.addToWatchlist()
+        }
+        
+        UIView.animate(withDuration: 1) {
+            let isInWatchlist = self.viewModel.isInWatchlist()
+            
+            self.rightBarButton.image = UIImage(systemName: isInWatchlist ? "clock.badge.xmark" : "clock.badge.checkmark")
+            self.rightBarButton.tintColor = isInWatchlist ? .systemRed : .systemGreen
+        }
+    }
+}

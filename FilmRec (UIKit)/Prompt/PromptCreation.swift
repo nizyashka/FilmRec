@@ -1,10 +1,3 @@
-//
-//  CreatePrompt.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 19.04.2025.
-//
-
 import Foundation
 
 final class PromptCreation {
@@ -12,7 +5,7 @@ final class PromptCreation {
     
     private init() { }
     
-    func createPrompt(for requestModel: Request) -> String {
+    func createPrompt(for requestModel: Request, exclude films: [String]) -> String {
         var prompt: String = "Please, recommend me "
         
         switch requestModel.genre {
@@ -85,9 +78,15 @@ final class PromptCreation {
             prompt += "in any decade."
         }
         
-        prompt += "In your response write only the title of the film without brackets or other symbols and a release year of that film. The title and the year have to be divided by / without spaces."
+        if !films.isEmpty {
+            prompt += " Do not recommend me "
+            
+            for (index, film) in films.enumerated() {
+                prompt += index == films.count - 1 ? "\(film)." : "\(film), "
+            }
+        }
         
-        //print(prompt)
+        prompt += " In your response write only the title of the film without brackets or other symbols and a release year of that film. The title and the year have to be divided by / without spaces."
         
         return(prompt)
     }

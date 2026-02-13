@@ -1,16 +1,13 @@
-//
-//  PromptModel.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 19.04.2025.
-//
-
-import Foundation
+import UIKit
 
 struct Request {
-    var name: String
-    var genre: String
-    var country: String
-    var director: String
-    var decade: String
+    let id: UUID
+    let name: String
+    let genre: String
+    let country: String
+    let director: String
+    let decade: String
+    let color: UIColor
+    let dateCreated: Date
+    var dateExecuted: Date
 }

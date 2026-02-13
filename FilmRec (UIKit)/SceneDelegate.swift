@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 18.04.2025.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -24,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         firstNavigationController.tabBarItem = UITabBarItem(title: "My requests", image: UIImage(systemName: "square.stack"), tag: 0)
         
         let requestCreationViewController = UIViewController()
-        requestCreationViewController.tabBarItem = UITabBarItem(title: "New request", image: UIImage(named: "plus_circle")?.withRenderingMode(.alwaysOriginal), tag: 1)
+        requestCreationViewController.tabBarItem = UITabBarItem(title: "New request", image: UIImage(systemName: "plus.circle")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal), tag: 1)
         
         let watchlistViewModel = WatchlistViewModel()
         let watchlistViewController = WatchlistViewController(viewModel: watchlistViewModel)
@@ -33,9 +26,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         tabBarController.delegate = self
-//        tabBarController.tabBar.backgroundColor = .black
         tabBarController.viewControllers = [firstNavigationController, requestCreationViewController, thirdNavigationController]
+        tabBarController.tabBar.tintColor = .systemBlue
+        tabBarController.tabBar.unselectedItemTintColor = .systemGray
         
+        applyTheme()
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
@@ -50,6 +45,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(themeDidChange),
+            name: .themeDidChange,
+            object: nil
+        )
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -67,8 +69,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
+    
+    func applyTheme() {
+        let appTheme = UserDefaults.standard.bool(forKey: "appTheme")
+        window?.overrideUserInterfaceStyle = appTheme ? .dark : .light
+    }
+    
+    @objc private func themeDidChange() {
+        applyTheme()
+    }
 }
 
 extension SceneDelegate: UITabBarControllerDelegate {

@@ -1,10 +1,3 @@
-//
-//  ErrorEnums.swift
-//  FilmRec (Storyboard)
-//
-//  Created by Алексей Непряхин on 17.05.2025.
-//
-
 import Foundation
 
 enum NetworkingErrors: Error {
@@ -14,4 +7,9 @@ enum NetworkingErrors: Error {
 
 enum DecodingErrors: Error {
     case decodingError
+}
+
+enum CoreDataErrors: Error {
+    case errorSaving
+    case errorDeleting
 }
