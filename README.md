@@ -5,7 +5,7 @@ FilmRec is a movie recommendation iOS application built with UIKit and MVVM arch
 - 🤖Movie recommendations using OpenAI API
 - 🎥Fetching movie data from TMDB API
 - 💾Local data persistence with Core Data
-- 🧱Clean MVVM architecture
+- 🧱MVVM architecture
 
 ## 🛠 Tech Stack
 **Language:** Swift<br>
