@@ -27,8 +27,7 @@ FilmRec is a movie recommendation iOS application built with UIKit and MVVM arch
 </p>
 
 ## 🎨 Design
-The UI/UX design was created in Figma:  
-👉 [Open Figma Prototype](https://www.figma.com/design/b6vfxwMhYjGdfGzjx1MoWb/FilmRec?node-id=0-1&t=m7GkbtizJumF8JU8-1)
+The UI/UX design was created in Figma: 👉 [Open Figma Prototype](https://www.figma.com/design/b6vfxwMhYjGdfGzjx1MoWb/FilmRec?node-id=0-1&t=m7GkbtizJumF8JU8-1)
 
 ## 🚀 Installation
 1. Clone the repository
