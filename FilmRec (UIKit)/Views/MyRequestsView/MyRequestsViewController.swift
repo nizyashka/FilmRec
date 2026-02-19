@@ -10,6 +10,7 @@ class MyRequestsViewController: UIViewController {
         
         tableView.backgroundColor = .rootBackground
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView

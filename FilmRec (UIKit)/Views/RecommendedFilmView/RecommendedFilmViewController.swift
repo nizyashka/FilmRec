@@ -4,6 +4,7 @@ import Kingfisher
 final class RecommendedFilmViewController: UIViewController {
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         return scrollView
@@ -119,6 +120,14 @@ final class RecommendedFilmViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .secondaryBackground
         
+        let appearance = UINavigationBarAppearance()
+        
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .secondaryBackground
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.rightBarButtonItem = rightBarButton
         
@@ -154,6 +163,7 @@ final class RecommendedFilmViewController: UIViewController {
             filmRatingImageView.centerYAnchor.constraint(equalTo: filmRatingLabel.centerYAnchor),
             
             filmOverviewLabel.topAnchor.constraint(equalTo: filmRatingLabel.bottomAnchor, constant: 16),
+            filmOverviewLabel.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -16),
             filmOverviewLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
             filmOverviewLabel.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
         ])
