@@ -268,6 +268,7 @@ extension RequestViewController: UICollectionViewDelegateFlowLayout, UICollectio
             return cell
         }
         
+        cell.filmTitleLabel.text = film.originalTitle
         cell.filmPosterImageView.kf.setImage(with: imageURL)
         
         return cell
