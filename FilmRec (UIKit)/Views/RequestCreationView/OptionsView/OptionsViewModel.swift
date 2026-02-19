@@ -27,13 +27,46 @@ final class OptionsViewModel {
     func getSuitableOptions(optionsTabName: String) -> [String] {
         switch optionsTabName {
         case "Genre":
-            return ["Any", "Comedy", "Horror", "Fantasy", "Thriller", "Action", "Drama"]
+            return [
+                "Any", "Action", "Adventure",
+                "Animation", "Comedy", "Crime",
+                "Documentary", "Drama", "Family",
+                "Fantasy", "History", "Horror",
+                "Music", "Mystery", "Romance",
+                "Science Fiction", "Thriller", "War", "Western"
+            ]
         case "Country":
-            return ["Any", "USA", "Great Britain", "France", "Russia", "Italy", "Japan"]
+            return [
+                "Any", "Denmark", "France",
+                "Germany", "Great Britain", "Hong Kong",
+                "Italy", "Japan", "Norway",
+                "Russia", "South Korea", "Spain",
+                "Sweden", "Turkey", "USA"
+            ]
+            
         case "Director":
-            return ["Any", "Martin Scorsese", "Quentin Tarantino", "Stanley Kubrick"]
+            return [
+                "Any", "Akira Kurosawa", "Alfred Hitchcock",
+                "Andrei Tarkovsky", "Billy Wilder", "Brian De Palma",
+                "Buster Keaton", "Christopher Nolan", "Coen brothers",
+                "Danny Boyle", "David Fincher", "David Lynch",
+                "Denis Villeneuve", "Edgar Wright", "Francis Ford Coppola",
+                "François Truffaut", "Hayao Miyazaki", "Ingmar Bergman",
+                "James Cameron", "John Carpenter", "Lars von Trier",
+                "Martin Scorsese", "Michael Mann", "Orson Welles",
+                "Paul Thomas Anderson", "Peter Jackson", "Quentin Tarantino",
+                "Ridley Scott", "Robert Rodriguez", "Robert Zemeckis",
+                "Roman Polanski", "Sergio Leone", "Sidney Lumet",
+                "Stanley Kubrick", "Steven Spielberg", "Wes Anderson",
+                "Woody Allen"
+            ]
         case "Decade":
-            return ["Any", "2020s", "2010s", "2000s", "1990s", "1980s", "1970s", "1960s", "1950s", "1940s", "1930s"]
+            return [
+                "Any", "2020s", "2010s",
+                "2000s", "1990s", "1980s",
+                "1970s", "1960s", "1950s",
+                "1940s", "1930s"
+            ]
         default:
             return []
         }

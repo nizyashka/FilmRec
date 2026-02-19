@@ -9,73 +9,31 @@ final class PromptCreation {
         var prompt: String = "Please, recommend me "
         
         switch requestModel.genre {
-        case "Comedy":
-            prompt += "a comedy film, "
-        case "Horror":
-            prompt += "a horror film, "
-        case "Fantasy":
-            prompt += "a fantasy film, "
-        case "Thriller":
-            prompt += "a thriller film, "
-        case "Action":
-            prompt += "an action film, "
-        case "Drama":
-            prompt += "a drama film, "
-        default:
+        case "Any":
             prompt += "a film of any genre, "
+        default:
+            prompt += "a \(requestModel.genre) film, "
         }
         
         switch requestModel.country {
-        case "USA":
-            prompt += "produced in USA "
-        case "Great Britain":
-            prompt += "produced in Great Britain "
-        case "France":
-            prompt += "produced in France "
-        case "Russia":
-            prompt += "produced in Russia "
-        case "Italy":
-            prompt += "produced in Italy "
-        case "Japan":
-            prompt += "produced in Japan "
-        default:
+        case "Any":
             prompt += "produced in any country "
+        default:
+            prompt += "produced in \(requestModel.country) "
         }
         
         switch requestModel.director {
-        case "Martin Scorsese":
-            prompt += "and directed by Martin Scorsese "
-        case "Quentin Tarantino":
-            prompt += "and directed by Quentin Tarantino "
-        case "Stanley Kubrick":
-            prompt += "and directed by Stanley Kubrick "
-        default:
+        case "Any":
             prompt += "and directed by any director "
+        default:
+            prompt += "and directed by \(requestModel.director) "
         }
         
         switch requestModel.decade {
-        case "2020s":
-            prompt += "in 2020s."
-        case "2010s":
-            prompt += "in 2010s."
-        case "2000s":
-            prompt += "in 2000s."
-        case "1990s":
-            prompt += "in 1990s."
-        case "1980s":
-            prompt += "in 1980s."
-        case "1970s":
-            prompt += "in 1970s."
-        case "1960s":
-            prompt += "in 1960s."
-        case "1950s":
-            prompt += "in 1950s."
-        case "1940s":
-            prompt += "in 1940s."
-        case "1930s":
-            prompt += "in 1930s."
-        default:
+        case "Any":
             prompt += "in any decade."
+        default:
+            prompt += "in \(requestModel.decade)."
         }
         
         if !films.isEmpty {
