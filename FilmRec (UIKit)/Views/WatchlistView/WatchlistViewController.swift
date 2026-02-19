@@ -142,6 +142,17 @@ extension WatchlistViewController: UICollectionViewDelegateFlowLayout, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: 80, height: 120)
+        let width = (collectionView.bounds.width - 24) / 4
+        let height = width * 1.5
+        
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
     }
 }

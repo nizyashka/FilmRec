@@ -8,6 +8,7 @@ final class FilmCardCell: UICollectionViewCell {
         imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
+        imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         return imageView
@@ -30,10 +31,10 @@ final class FilmCardCell: UICollectionViewCell {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            filmPosterImageView.heightAnchor.constraint(equalToConstant: 120),
-            filmPosterImageView.widthAnchor.constraint(equalToConstant: 80),
-            filmPosterImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            filmPosterImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            filmPosterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            filmPosterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            filmPosterImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            filmPosterImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 }
