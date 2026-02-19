@@ -13,7 +13,7 @@ struct FilmTMDB: Codable {
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
-        case originalTitle = "original_title"
+        case originalTitle = "title"
         case overview = "overview"
         case posterPath = "poster_path"
         case voteAverage = "vote_average"
