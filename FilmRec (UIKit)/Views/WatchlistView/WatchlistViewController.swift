@@ -46,8 +46,8 @@ final class WatchlistViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            filmsInWatchlistCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
-            filmsInWatchlistCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            filmsInWatchlistCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            filmsInWatchlistCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             filmsInWatchlistCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             filmsInWatchlistCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
