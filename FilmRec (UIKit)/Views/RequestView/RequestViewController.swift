@@ -98,8 +98,6 @@ final class RequestViewController: UIViewController {
     
     private let viewModel: RequestViewModel
     
-    private var previouslyRecommendedFilmsCollectionViewHeightConstraint: NSLayoutConstraint!
-    
     init(viewModel: RequestViewModel) {
         self.viewModel = viewModel
         
@@ -177,7 +175,6 @@ final class RequestViewController: UIViewController {
                     
                     self?.previouslyRecommendedFilmsCollectionView.reloadData()
                     self?.previouslyRecommendedFilmsCollectionView.layoutIfNeeded()
-                    self?.previouslyRecommendedFilmsCollectionViewHeightConstraint.constant = self?.previouslyRecommendedFilmsCollectionView.collectionViewLayout.collectionViewContentSize.height ?? 0
                     
                     let recommendedFilmViewModel = RecommendedFilmViewModel(film: film)
                     let recommendedFilmViewController = RecommendedFilmViewController(viewModel: recommendedFilmViewModel)
