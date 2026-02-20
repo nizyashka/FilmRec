@@ -48,8 +48,8 @@ final class RequestViewController: UIViewController {
         return label
     }()
     
-    private lazy var previouslyRecommendedFilmsCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var previouslyRecommendedFilmsCollectionView: SelfSizingCollectionView = {
+        let collectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(FilmCardCell.self, forCellWithReuseIdentifier: FilmCardCell.reuseIdentifier)
@@ -135,8 +135,6 @@ final class RequestViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        previouslyRecommendedFilmsCollectionViewHeightConstraint = previouslyRecommendedFilmsCollectionView.heightAnchor.constraint(equalToConstant: countHeightForCollectionView())
-        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -155,7 +153,6 @@ final class RequestViewController: UIViewController {
             previouslyRecommendedLabel.topAnchor.constraint(equalTo: optionsTabsTableView.bottomAnchor, constant: 32),
             previouslyRecommendedLabel.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 32),
             
-            previouslyRecommendedFilmsCollectionViewHeightConstraint,
             previouslyRecommendedFilmsCollectionView.topAnchor.constraint(equalTo: previouslyRecommendedLabel.bottomAnchor, constant: 16),
             previouslyRecommendedFilmsCollectionView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             previouslyRecommendedFilmsCollectionView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
@@ -213,18 +210,6 @@ final class RequestViewController: UIViewController {
             self?.viewModel.deleteRequest()
         }))
         self.present(alert, animated: true)
-    }
-    
-    private func countHeightForCollectionView() -> CGFloat {
-        var numberOfRows = 0
-        
-        if viewModel.previouslyRecommendedFilms.count % 4 > 0 {
-            numberOfRows = (viewModel.previouslyRecommendedFilms.count / 4) + 1
-        } else {
-            numberOfRows = viewModel.previouslyRecommendedFilms.count / 4
-        }
-        
-        return CGFloat(numberOfRows * 128)
     }
 }
 
