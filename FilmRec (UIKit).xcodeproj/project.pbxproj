@@ -161,6 +161,7 @@
 				DEVELOPMENT_TEAM = JUPL36J53E;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "FilmRec (UIKit)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = FilmRec;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -192,6 +193,7 @@
 				DEVELOPMENT_TEAM = JUPL36J53E;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "FilmRec (UIKit)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = FilmRec;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
