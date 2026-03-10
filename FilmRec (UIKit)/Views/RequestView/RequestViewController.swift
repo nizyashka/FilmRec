@@ -96,9 +96,9 @@ final class RequestViewController: UIViewController {
         return button
     }()
     
-    private let viewModel: RequestViewModel
+    private let viewModel: RequestViewModelProtocol
     
-    init(viewModel: RequestViewModel) {
+    init(viewModel: RequestViewModelProtocol) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)

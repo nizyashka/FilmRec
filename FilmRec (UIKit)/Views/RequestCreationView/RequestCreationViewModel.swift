@@ -1,14 +1,21 @@
 import UIKit
 
-final class RequestCreationViewModel {
+protocol RequestCreationViewModelProtocol: AnyObject {
+    var optionsTabs: [String] { get }
+    var updatePickedOptionLabel: (IndexPath, String) -> Void { get set }
+    func saveWithoutExecution(requestName: String)
+    func getTabNameAndPickedOption(at index: Int) -> (String, String)
+}
+
+final class RequestCreationViewModel: RequestCreationViewModelProtocol {
     var updatePickedOptionLabel: (IndexPath, String) -> Void = { _, _ in }
     
     let optionsTabs = ["Genre", "Country", "Director", "Decade"]
     
-    var pickedGenre = "Any"
-    var pickedCountry = "Any"
-    var pickedDirector = "Any"
-    var pickedDecade = "Any"
+    private var pickedGenre = "Any"
+    private var pickedCountry = "Any"
+    private var pickedDirector = "Any"
+    private var pickedDecade = "Any"
     
     private let requestsStore = RequestsStore.shared
     

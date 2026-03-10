@@ -16,9 +16,9 @@ class MyRequestsViewController: UIViewController {
         return tableView
     }()
     
-    private let viewModel: MyRequestsViewModel
+    private let viewModel: MyRequestsViewModelProtocol
     
-    init(viewModel: MyRequestsViewModel) {
+    init(viewModel: MyRequestsViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

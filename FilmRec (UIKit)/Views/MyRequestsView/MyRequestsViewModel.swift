@@ -1,7 +1,14 @@
 import UIKit
 
-final class MyRequestsViewModel {
-    let requestsStore = RequestsStore.shared
+protocol MyRequestsViewModelProtocol: AnyObject {
+    var requests: [Request] { get }
+    var requestsCoreData: [RequestCoreData] { get }
+    var selectedSortingOption: RequestsSortingOptions { get set }
+    var controllerDidChangeContent: (() -> Void)? { get set }
+}
+
+final class MyRequestsViewModel: MyRequestsViewModelProtocol {
+    private let requestsStore = RequestsStore.shared
     
     var requests: [Request] {
         let requests = requestsStore.toRequest(from: requestsCoreData)
@@ -11,6 +18,20 @@ final class MyRequestsViewModel {
     var requestsCoreData: [RequestCoreData] {
         let requestCoreData = fetchRequestsFromCoreData()
         return sortRequests(requestCoreData)
+    }
+    
+    var selectedSortingOption: RequestsSortingOptions {
+        get {
+            guard let rawValue = UserDefaults.standard.string(forKey: "requestsSortingOption"),
+                  let option = RequestsSortingOptions(rawValue: rawValue) else {
+                return .dateExecuted
+            }
+            return option
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: "requestsSortingOption")
+        }
     }
     
     var controllerDidChangeContent: (() -> Void)?
@@ -26,20 +47,6 @@ final class MyRequestsViewModel {
         }
         
         return requestsCoreData
-    }
-    
-    var selectedSortingOption: RequestsSortingOptions {
-        get {
-            guard let rawValue = UserDefaults.standard.string(forKey: "requestsSortingOption"),
-                  let option = RequestsSortingOptions(rawValue: rawValue) else {
-                return .dateExecuted
-            }
-            return option
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue.rawValue, forKey: "requestsSortingOption")
-        }
     }
     
     private func sortRequests(_ requests: [RequestCoreData]) -> [RequestCoreData] {

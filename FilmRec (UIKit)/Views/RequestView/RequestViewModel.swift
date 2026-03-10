@@ -1,6 +1,18 @@
 import Foundation
 
-final class RequestViewModel {
+protocol RequestViewModelProtocol: AnyObject {
+    var optionsTabs: [String] { get }
+    var request: Request { get }
+    var previouslyRecommendedFilms: [Film] { get }
+    func loadPreviouslyRecommendedFilms()
+    func executeRequest(completion: @escaping (Result<Film, Error>) -> Void)
+    func deleteRequest()
+    func getTabNameAndPickedOption(at index: Int) -> (String, String)
+    
+    init(request: Request, requestCoreData: RequestCoreData)
+}
+
+final class RequestViewModel: RequestViewModelProtocol {
     let optionsTabs = ["Genre", "Country", "Director", "Decade"]
     
     var request: Request

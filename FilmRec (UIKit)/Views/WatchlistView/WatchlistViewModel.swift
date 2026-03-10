@@ -1,8 +1,14 @@
 import Foundation
 
-final class WatchlistViewModel {
-    let watchlistStore = WatchlistStore.shared
-    let filmsStore = FilmsStore.shared
+protocol WatchlistViewModelProtocol: AnyObject {
+    var filmsInWatchlist: [Film] { get }
+    var selectedSortingOption: WatchlistSortingOptions { get set }
+    var controllerDidChangeContent: (() -> Void)? { get set }
+}
+
+final class WatchlistViewModel: WatchlistViewModelProtocol {
+    private let watchlistStore = WatchlistStore.shared
+    private let filmsStore = FilmsStore.shared
     
     var filmsInWatchlist: [Film] {
         return loadFilmsFromWatchlist()

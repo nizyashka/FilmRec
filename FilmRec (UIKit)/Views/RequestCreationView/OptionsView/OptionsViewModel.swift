@@ -4,12 +4,21 @@ protocol OptionsViewModelDelegate: AnyObject {
     func setPickedOption(optionsTabName: String, selectedOption: String)
 }
 
-final class OptionsViewModel {
+protocol OptionsViewModelProtocol: AnyObject {
+    var options: [String] { get }
+    var optionsTabName: String { get }
+    var selectedOption: String { get set }
+    
+    init(delegate: OptionsViewModelDelegate, optionsTabName: String, selectedOption: String)
+}
+
+final class OptionsViewModel: OptionsViewModelProtocol {
     lazy var options: [String] = {
         return getSuitableOptions(optionsTabName: optionsTabName)
     }()
     
     let optionsTabName: String
+    
     var selectedOption: String {
         didSet {
             optionsViewModelDelegate?.setPickedOption(optionsTabName: optionsTabName, selectedOption: selectedOption)

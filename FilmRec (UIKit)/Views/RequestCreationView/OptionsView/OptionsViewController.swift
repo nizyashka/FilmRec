@@ -24,9 +24,9 @@ final class OptionsViewController: UIViewController {
         return tableView
     }()
     
-    let viewModel: OptionsViewModel
+    let viewModel: OptionsViewModelProtocol
     
-    init(viewModel: OptionsViewModel) {
+    init(viewModel: OptionsViewModelProtocol) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)

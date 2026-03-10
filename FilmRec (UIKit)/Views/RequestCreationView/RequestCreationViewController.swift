@@ -72,9 +72,9 @@ final class RequestCreationViewController: UIViewController {
         return button
     }()
     
-    private let viewModel: RequestCreationViewModel
+    private let viewModel: RequestCreationViewModelProtocol & OptionsViewModelDelegate
     
-    init(viewModel: RequestCreationViewModel) {
+    init(viewModel: RequestCreationViewModelProtocol & OptionsViewModelDelegate) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)

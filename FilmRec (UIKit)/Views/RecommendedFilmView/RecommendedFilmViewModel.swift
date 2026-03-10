@@ -1,8 +1,17 @@
 import Foundation
 
-final class RecommendedFilmViewModel {
-    let filmsStore = FilmsStore.shared
-    let watchlistStore = WatchlistStore.shared
+protocol RecommendedFilmViewModelProtocol: AnyObject {
+    var film: Film { get }
+    func addToWatchlist()
+    func removeFromWatchlist()
+    func isInWatchlist() -> Bool
+    
+    init(film: Film)
+}
+
+final class RecommendedFilmViewModel: RecommendedFilmViewModelProtocol {
+    private let filmsStore = FilmsStore.shared
+    private let watchlistStore = WatchlistStore.shared
     
     let film: Film
     

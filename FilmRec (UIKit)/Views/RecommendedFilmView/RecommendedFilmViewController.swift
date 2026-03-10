@@ -98,9 +98,9 @@ final class RecommendedFilmViewController: UIViewController {
         return label
     }()
     
-    private let viewModel: RecommendedFilmViewModel
+    private let viewModel: RecommendedFilmViewModelProtocol
     
-    init(viewModel: RecommendedFilmViewModel) {
+    init(viewModel: RecommendedFilmViewModelProtocol) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)

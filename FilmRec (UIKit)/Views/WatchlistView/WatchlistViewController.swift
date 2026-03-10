@@ -13,9 +13,9 @@ final class WatchlistViewController: UIViewController {
         return collectionView
     }()
     
-    var viewModel: WatchlistViewModel
+    var viewModel: WatchlistViewModelProtocol
     
-    init(viewModel: WatchlistViewModel) {
+    init(viewModel: WatchlistViewModelProtocol) {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
