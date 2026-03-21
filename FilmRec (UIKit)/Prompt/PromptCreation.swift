@@ -46,6 +46,6 @@ final class PromptCreation {
         
         prompt += " In your response write only the title of the film without brackets or other symbols and a release year of that film. The title and the year have to be divided by / without spaces."
         
-        return(prompt)
+        return prompt
     }
 }

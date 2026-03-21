@@ -6,7 +6,7 @@ protocol RequestsStoreDelegate: AnyObject {
 }
 
 final class RequestsStore: NSObject {
-    let context = CoreDataStack.shared.viewContext
+    private let context = CoreDataStack.shared.viewContext
     
     static let shared = RequestsStore()
     weak var requestsStoreDelegate: RequestsStoreDelegate?

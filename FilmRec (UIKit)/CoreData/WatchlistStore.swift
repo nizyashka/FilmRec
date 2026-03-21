@@ -66,7 +66,6 @@ final class WatchlistStore: NSObject {
         
         do {
             try CoreDataStack.shared.saveContext()
-            return
         } catch {
             assertionFailure("[WatchlistStore] - removeFilmFromWatchlist: Failed to remove film from watchlist in Core Data.")
             return

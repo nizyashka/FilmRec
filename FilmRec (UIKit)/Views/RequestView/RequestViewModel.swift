@@ -8,8 +8,6 @@ protocol RequestViewModelProtocol: AnyObject {
     func executeRequest(completion: @escaping (Result<Film, Error>) -> Void)
     func deleteRequest()
     func getTabNameAndPickedOption(at index: Int) -> (String, String)
-    
-    init(request: Request, requestCoreData: RequestCoreData)
 }
 
 final class RequestViewModel: RequestViewModelProtocol {
@@ -19,12 +17,12 @@ final class RequestViewModel: RequestViewModelProtocol {
     var requestCoreData: RequestCoreData
     private(set) var previouslyRecommendedFilms: [Film] = []
     
-    let openAIService = OpenAIService.shared
-    let tmdbService = TMDBService.shared
-    let openAIResponseObjectDecoder = OpenAIResponseObjectDecoder.shared
-    let tmdbResponseObjectDecoder = TMDBResponseObjectDecoder.shared
-    let filmsStore = FilmsStore.shared
-    let requestsStore = RequestsStore.shared
+    private let openAIService = OpenAIService.shared
+    private let tmdbService = TMDBService.shared
+    private let openAIResponseObjectDecoder = OpenAIResponseObjectDecoder.shared
+    private let tmdbResponseObjectDecoder = TMDBResponseObjectDecoder.shared
+    private let filmsStore = FilmsStore.shared
+    private let requestsStore = RequestsStore.shared
     
     init(request: Request, requestCoreData: RequestCoreData) {
         self.request = request
@@ -45,7 +43,7 @@ final class RequestViewModel: RequestViewModelProtocol {
         case "Decade":
             pickedOption = request.decade
         default:
-            assertionFailure("[RequestCreationViewModel] - setPickedOption: No such optionsTabName exists.")
+            assertionFailure("[RequestViewModel] - setPickedOption: No such optionsTabName exists.")
         }
         
         return (optionsTabName, pickedOption)

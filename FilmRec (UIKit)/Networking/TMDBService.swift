@@ -25,7 +25,12 @@ final class TMDBService {
         
         components.queryItems = queryItems
         
-        var request = URLRequest(url: components.url!)
+        guard let url = components.url else {
+            print("[TMDBService] - makeTMDBRequest: Wrong URL.")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
         
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [

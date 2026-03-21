@@ -24,7 +24,11 @@ final class RecommendedFilmViewController: UIViewController {
     private lazy var rightBarButton: UIBarButtonItem = {
         let systemName = viewModel.isInWatchlist() ? "clock.badge.xmark" : "clock.badge.checkmark"
         
-        let rightBarButton = UIBarButtonItem(image: UIImage(systemName: systemName)!,
+        guard let image = UIImage(systemName: systemName) else {
+            return UIBarButtonItem()
+        }
+        
+        let rightBarButton = UIBarButtonItem(image: image,
                                              style: .plain,
                                              target: self,
                                              action: #selector(rightBarButtonTapped))
